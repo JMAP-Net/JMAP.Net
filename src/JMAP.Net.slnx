@@ -1,1 +1,3 @@
-<Solution />
+<Solution>
+  <Project Path="JMAP.Net/JMAP.Net.csproj" />
+</Solution>
