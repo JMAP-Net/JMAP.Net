@@ -4,10 +4,44 @@
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-    </PropertyGroup>
 
+        <!-- NuGet Package Metadata -->
+        <PackageId>JMAP.Net</PackageId>
+        <Title>JMAP.Net</Title>
+        <Description>A modern .NET library implementing the JSON Meta Application Protocol (RFC 8620/8621).</Description>
+        <Authors>JMAP.Net</Authors>
+        <PackageTags>jmap;rfc8620;rfc8621</PackageTags>
+        <PackageProjectUrl>https://github.com/JMAP-Net/JMAP.Net</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/JMAP-Net/JMAP.Net</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <Copyright>Copyright (c) 2025 JMAP.Net</Copyright>
+
+        <!-- Build Settings -->
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+    
     <ItemGroup>
         <PackageReference Include="JSCalendar.Net" Version="0.1.6" />
+        <PackageReference Include="Nerdbank.GitVersioning" Version="3.9.50">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\version.json" Pack="false" >
+        <Link>version.json</Link>
+      </Content>
     </ItemGroup>
 
 </Project>
