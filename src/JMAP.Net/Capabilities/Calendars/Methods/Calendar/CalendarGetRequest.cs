@@ -8,8 +8,4 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.Calendar;
 /// </summary>
 public class CalendarGetRequest : GetRequest<JMAP.Net.Capabilities.Calendars.Types.Calendar>
 {
-    // Inherits all properties from GetRequest<CalendarType>:
-    // - AccountId
-    // - Ids (nullable for fetching all)
-    // - Properties (nullable for all properties)
 }

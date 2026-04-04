@@ -8,12 +8,4 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.ParticipantIdentity;
 /// </summary>
 public class ParticipantIdentityChangesResponse : ChangesResponse
 {
-    // Inherits all properties from ChangesResponse:
-    // - AccountId
-    // - OldState
-    // - NewState
-    // - HasMoreChanges
-    // - Created (array of ids)
-    // - Updated (array of ids)
-    // - Destroyed (array of ids)
 }

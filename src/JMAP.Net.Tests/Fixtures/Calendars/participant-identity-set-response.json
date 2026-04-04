@@ -1,0 +1,43 @@
+{
+  "accountId": "account1",
+  "oldState": "state-1",
+  "newState": "state-2",
+  "created": {
+    "temp-ident-1": {
+      "id": "ident1",
+      "name": "",
+      "scheduleId": "mailto:user@example.com",
+      "sendTo": {
+        "imip": "mailto:user@example.com"
+      },
+      "isDefault": false
+    }
+  },
+  "updated": {
+    "ident2": null
+  },
+  "destroyed": [
+    "ident3"
+  ],
+  "notCreated": {
+    "temp-ident-2": {
+      "type": "invalidProperties",
+      "description": "scheduleId is required",
+      "properties": [
+        "scheduleId"
+      ]
+    }
+  },
+  "notUpdated": {
+    "ident4": {
+      "type": "notFound",
+      "description": "Participant identity not found"
+    }
+  },
+  "notDestroyed": {
+    "ident5": {
+      "type": "forbidden",
+      "description": "Participant identity cannot be destroyed"
+    }
+  }
+}

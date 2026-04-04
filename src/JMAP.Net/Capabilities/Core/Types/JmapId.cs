@@ -17,8 +17,15 @@ public readonly partial struct JmapId : IEquatable<JmapId>
     [GeneratedRegex("^[A-Za-z0-9_-]+$")]
     private static partial Regex ValidCharactersRegex();
 
+    /// <summary>
+    /// Gets the underlying identifier string.
+    /// </summary>
     public string Value { get; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="JmapId" /> struct.
+    /// </summary>
+    /// <param name="value">The identifier value to validate and store.</param>
     public JmapId(string value)
     {
         if (string.IsNullOrEmpty(value))
@@ -102,14 +109,43 @@ public readonly partial struct JmapId : IEquatable<JmapId>
         return true;
     }
 
+    /// <summary>
+    /// Converts a <see cref="JmapId" /> to its underlying string value.
+    /// </summary>
     public static implicit operator string(JmapId id) => id.Value;
+
+    /// <summary>
+    /// Converts a string to a <see cref="JmapId" /> after validation.
+    /// </summary>
     public static explicit operator JmapId(string value) => new(value);
 
+    /// <summary>
+    /// Returns the underlying identifier string.
+    /// </summary>
     public override string ToString() => Value;
+
+    /// <summary>
+    /// Indicates whether this value is equal to another <see cref="JmapId" />.
+    /// </summary>
     public bool Equals(JmapId other) => Value == other.Value;
+
+    /// <summary>
+    /// Indicates whether this value is equal to another object.
+    /// </summary>
     public override bool Equals(object? obj) => obj is JmapId other && Equals(other);
+
+    /// <summary>
+    /// Returns a hash code for the current value.
+    /// </summary>
     public override int GetHashCode() => Value.GetHashCode();
 
+    /// <summary>
+    /// Returns <see langword="true" /> if two values are equal.
+    /// </summary>
     public static bool operator ==(JmapId left, JmapId right) => left.Equals(right);
+
+    /// <summary>
+    /// Returns <see langword="true" /> if two values are not equal.
+    /// </summary>
     public static bool operator !=(JmapId left, JmapId right) => !left.Equals(right);
 }

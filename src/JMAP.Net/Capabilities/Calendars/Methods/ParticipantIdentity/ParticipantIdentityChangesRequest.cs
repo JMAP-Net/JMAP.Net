@@ -8,8 +8,4 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.ParticipantIdentity;
 /// </summary>
 public class ParticipantIdentityChangesRequest : ChangesRequest
 {
-    // Inherits all properties from ChangesRequest:
-    // - AccountId
-    // - SinceState
-    // - MaxChanges (optional)
 }

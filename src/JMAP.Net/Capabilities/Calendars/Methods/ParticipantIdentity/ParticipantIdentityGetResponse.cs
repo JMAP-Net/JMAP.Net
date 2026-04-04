@@ -8,9 +8,4 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.ParticipantIdentity;
 /// </summary>
 public class ParticipantIdentityGetResponse : GetResponse<JMAP.Net.Capabilities.Calendars.Types.ParticipantIdentity>
 {
-    // Inherits all properties from GetResponse<ParticipantIdentityType>:
-    // - AccountId
-    // - State
-    // - List (array of ParticipantIdentity objects)
-    // - NotFound (array of ids not found)
 }

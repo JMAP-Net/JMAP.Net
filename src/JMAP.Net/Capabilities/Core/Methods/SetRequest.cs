@@ -5,8 +5,8 @@ using JSCalendar.Net;
 namespace JMAP.Net.Capabilities.Core.Methods;
 
 /// <summary>
-/// Base request class for Foo/set methods.
-/// This encompasses creating, updating, and destroying Foo records.
+/// Base request class for <c>*/set</c> methods.
+/// This encompasses creating, updating, and destroying records of a single object type.
 /// As per RFC 8620, Section 5.3.
 /// </summary>
 /// <typeparam name="TObject">The type of object being modified</typeparam>
@@ -20,33 +20,33 @@ public abstract class SetRequest<TObject, TPatch>
     public required JmapId AccountId { get; init; }
 
     /// <summary>
-    /// This is a state string as returned by Foo/get.
-    /// If supplied, the string must match the current state; otherwise, the method will be aborted.
-    /// If null, any changes will be applied to the current state.
+    /// A state string as returned by the corresponding <c>*/get</c> method.
+    /// If supplied, the string must match the current state; otherwise, the method is aborted.
+    /// If <see langword="null" />, any changes are applied to the current state.
     /// </summary>
     [JsonPropertyName("ifInState")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? IfInState { get; init; }
 
     /// <summary>
-    /// A map of creation id (temporary id set by client) to Foo objects to create.
-    /// Null if no objects are to be created.
+    /// A map of creation id (temporary id set by the client) to objects to create.
+    /// <see langword="null" /> if no objects are to be created.
     /// </summary>
     [JsonPropertyName("create")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public Dictionary<JmapId, TObject>? Create { get; init; }
 
     /// <summary>
-    /// A map of id to a Patch object to apply to the current Foo object with that id.
-    /// Null if no objects are to be updated.
+    /// A map of id to a patch object to apply to the current object with that id.
+    /// <see langword="null" /> if no objects are to be updated.
     /// </summary>
     [JsonPropertyName("update")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public Dictionary<JmapId, TPatch>? Update { get; init; }
 
     /// <summary>
-    /// A list of ids for Foo objects to permanently delete.
-    /// Null if no objects are to be destroyed.
+    /// A list of ids for objects to permanently delete.
+    /// <see langword="null" /> if no objects are to be destroyed.
     /// </summary>
     [JsonPropertyName("destroy")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -54,7 +54,7 @@ public abstract class SetRequest<TObject, TPatch>
 }
 
 /// <summary>
-/// Generic Foo/set request with dictionary-based patch objects.
+/// Generic <c>*/set</c> request with dictionary-based patch objects.
 /// </summary>
 public class SetRequest : SetRequest<object, PatchObject>
 {

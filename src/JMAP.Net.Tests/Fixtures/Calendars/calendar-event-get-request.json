@@ -1,0 +1,16 @@
+{
+  "accountId": "account1",
+  "ids": [
+    "event1",
+    "event2"
+  ],
+  "properties": [
+    "title",
+    "start",
+    "participants"
+  ],
+  "recurrenceOverridesBefore": "2026-05-01T00:00:00Z",
+  "recurrenceOverridesAfter": "2026-04-01T00:00:00Z",
+  "reduceParticipants": true,
+  "timeZone": "Europe/Berlin"
+}

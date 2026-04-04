@@ -4,7 +4,7 @@ using JMAP.Net.Capabilities.Core.Types;
 namespace JMAP.Net.Capabilities.Core.Methods;
 
 /// <summary>
-/// Base request class for Foo/changes methods.
+/// Base request class for <c>*/changes</c> methods.
 /// As per RFC 8620, Section 5.2.
 /// </summary>
 public class ChangesRequest
@@ -17,7 +17,8 @@ public class ChangesRequest
 
     /// <summary>
     /// The current state of the client.
-    /// This is the string that was returned as the state argument in the Foo/get response.
+    /// This is the string that was returned as the <c>state</c> argument in the
+    /// corresponding <c>*/get</c> response.
     /// </summary>
     [JsonPropertyName("sinceState")]
     public required string SinceState { get; init; }

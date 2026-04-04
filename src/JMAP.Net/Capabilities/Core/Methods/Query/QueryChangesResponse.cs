@@ -4,7 +4,7 @@ using JMAP.Net.Capabilities.Core.Types;
 namespace JMAP.Net.Capabilities.Core.Methods.Query;
 
 /// <summary>
-/// Base response class for Foo/queryChanges methods.
+/// Base response class for <c>*/queryChanges</c> methods.
 /// As per RFC 8620, Section 5.6.
 /// </summary>
 public class QueryChangesResponse
@@ -29,7 +29,7 @@ public class QueryChangesResponse
     public required string NewQueryState { get; init; }
 
     /// <summary>
-    /// The total number of Foos in the results (given the filter).
+    /// The total number of records in the results for the given filter.
     /// Only present if calculateTotal was true in the request.
     /// </summary>
     [JsonPropertyName("total")]
@@ -37,14 +37,14 @@ public class QueryChangesResponse
     public JmapUnsignedInt? Total { get; init; }
 
     /// <summary>
-    /// The id for every Foo that was in the query results in the old state
+    /// The id for every record that was in the query results in the old state
     /// and is not in the results in the new state.
     /// </summary>
     [JsonPropertyName("removed")]
     public required List<JmapId> Removed { get; init; }
 
     /// <summary>
-    /// The id and index in the query results (in the new state) for every Foo that has been
+    /// The id and index in the query results in the new state for every record that has been
     /// added to the results since the old state.
     /// The array MUST be sorted in order of index, lowest first.
     /// </summary>

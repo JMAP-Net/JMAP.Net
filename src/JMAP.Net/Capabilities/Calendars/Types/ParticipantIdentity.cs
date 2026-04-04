@@ -18,8 +18,10 @@ public class ParticipantIdentity
     public required JmapId Id { get; init; }
 
     /// <summary>
-    /// The display name of the participant to use when adding this participant to an event.
-    /// Default: "".
+    /// The display name to use when adding this participant to an event.
+    /// The model initializes this property to an empty string.
+    /// With the current serializer settings, an explicit empty string is emitted in JSON
+    /// rather than being omitted.
     /// </summary>
     [JsonPropertyName("name")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]

@@ -1,0 +1,13 @@
+{
+  "accountId": "account1",
+  "queryState": "query-state-1",
+  "canCalculateChanges": true,
+  "position": 0,
+  "ids": [
+    "item1",
+    "item2",
+    "item3"
+  ],
+  "total": 3,
+  "limit": 50
+}

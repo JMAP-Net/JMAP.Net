@@ -4,15 +4,8 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.Calendar;
 
 /// <summary>
 /// Response for Calendar/copy method.
-/// Returns the results of copying calendars between accounts.
+/// As per JMAP Calendars RFC, Section 4.4.
 /// </summary>
 public class CalendarCopyResponse : CopyResponse<JMAP.Net.Capabilities.Calendars.Types.Calendar>
 {
-    // Inherits all properties from CopyResponse<CalendarType>:
-    // - FromAccountId
-    // - AccountId
-    // - OldState
-    // - NewState
-    // - Created (map of creation id to Calendar)
-    // - NotCreated (map of creation id to SetError)
 }

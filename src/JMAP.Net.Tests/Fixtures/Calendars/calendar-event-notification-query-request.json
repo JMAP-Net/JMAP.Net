@@ -1,0 +1,19 @@
+{
+  "accountId": "account1",
+  "filter": {
+    "after": "2026-04-01T00:00:00Z",
+    "before": "2026-05-01T00:00:00Z",
+    "type": "Updated",
+    "calendarEventIds": [
+      "event1",
+      "event2"
+    ]
+  },
+  "sort": [
+    {
+      "property": "created"
+    }
+  ],
+  "limit": 50,
+  "calculateTotal": true
+}

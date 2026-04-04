@@ -32,7 +32,7 @@ jobs:
       run: dotnet build src/JMAP.Net/JMAP.Net.csproj --configuration Release --no-restore
     
     - name: Run tests
-      run: dotnet test --configuration Release --no-build --verbosity normal
+      run: dotnet test --solution src/JMAP.Net.slnx --configuration Release --no-build --verbosity normal
       continue-on-error: true
     
     - name: Pack

@@ -17,7 +17,7 @@ namespace JMAP.Net.Capabilities.Core.Types;
 /// {
 ///   "#ids": {
 ///     "resultOf": "c1",
-///     "name": "Foo/query",
+///     "name": "CalendarEvent/query",
 ///     "path": "/ids"
 ///   }
 /// }

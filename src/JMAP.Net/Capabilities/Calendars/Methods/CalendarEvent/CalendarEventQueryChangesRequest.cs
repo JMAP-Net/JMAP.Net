@@ -8,12 +8,4 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.CalendarEvent;
 /// </summary>
 public class CalendarEventQueryChangesRequest : QueryChangesRequest<CalendarEventFilterCondition>
 {
-    // Inherits all properties from QueryChangesRequest<CalendarEventFilterCondition>:
-    // - AccountId
-    // - Filter
-    // - Sort
-    // - SinceQueryState
-    // - MaxChanges (optional)
-    // - UpToId (optional)
-    // - CalculateTotal
 }

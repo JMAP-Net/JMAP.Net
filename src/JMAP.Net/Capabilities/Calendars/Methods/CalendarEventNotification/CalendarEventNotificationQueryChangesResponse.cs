@@ -4,7 +4,7 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.CalendarEventNotification;
 
 /// <summary>
 /// Response for CalendarEventNotification/queryChanges method.
-/// Standard JMAP queryChanges response for CalendarEventNotification objects.
+/// Response for CalendarEventNotification/queryChanges method.
 /// As per RFC 8984, Section 6.5.
 /// </summary>
 public class CalendarEventNotificationQueryChangesResponse : QueryChangesResponse

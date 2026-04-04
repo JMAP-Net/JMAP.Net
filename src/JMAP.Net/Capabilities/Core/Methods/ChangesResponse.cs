@@ -4,7 +4,7 @@ using JMAP.Net.Capabilities.Core.Types;
 namespace JMAP.Net.Capabilities.Core.Methods;
 
 /// <summary>
-/// Base response class for Foo/changes methods.
+/// Base response class for <c>*/changes</c> methods.
 /// As per RFC 8620, Section 5.2.
 /// </summary>
 public class ChangesResponse
@@ -29,8 +29,9 @@ public class ChangesResponse
     public required string NewState { get; init; }
 
     /// <summary>
-    /// If true, the client may call Foo/changes again with the newState returned to get further updates.
-    /// If false, newState is the current server state.
+    /// If <see langword="true" />, the client may call the corresponding <c>*/changes</c>
+    /// method again with the returned <see cref="NewState" /> to get further updates.
+    /// If <see langword="false" />, <see cref="NewState" /> is the current server state.
     /// </summary>
     [JsonPropertyName("hasMoreChanges")]
     public required bool HasMoreChanges { get; init; }

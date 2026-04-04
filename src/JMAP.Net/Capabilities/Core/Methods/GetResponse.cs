@@ -4,7 +4,7 @@ using JMAP.Net.Capabilities.Core.Types;
 namespace JMAP.Net.Capabilities.Core.Methods;
 
 /// <summary>
-/// Base response class for Foo/get methods.
+/// Base response class for <c>*/get</c> methods.
 /// As per RFC 8620, Section 5.1.
 /// </summary>
 /// <typeparam name="TObject">The type of object being fetched</typeparam>
@@ -24,7 +24,7 @@ public abstract class GetResponse<TObject>
     public required string State { get; init; }
 
     /// <summary>
-    /// An array of the Foo objects requested.
+    /// An array of the requested objects.
     /// This is the empty array if no objects were found or if the ids argument was empty.
     /// </summary>
     [JsonPropertyName("list")]
@@ -39,7 +39,7 @@ public abstract class GetResponse<TObject>
 }
 
 /// <summary>
-/// Generic Foo/get response.
+/// Generic <c>*/get</c> response.
 /// </summary>
 public class GetResponse : GetResponse<object>
 {

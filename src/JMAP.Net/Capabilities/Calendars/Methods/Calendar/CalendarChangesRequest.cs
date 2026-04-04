@@ -8,8 +8,4 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.Calendar;
 /// </summary>
 public class CalendarChangesRequest : ChangesRequest
 {
-    // Inherits all properties from ChangesRequest:
-    // - AccountId
-    // - SinceState
-    // - MaxChanges (optional)
 }

@@ -4,7 +4,7 @@ using JMAP.Net.Capabilities.Core.Types;
 namespace JMAP.Net.Capabilities.Core.Methods.Query;
 
 /// <summary>
-/// Base request class for Foo/query methods.
+/// Base request class for <c>*/query</c> methods.
 /// As per RFC 8620, Section 5.5.
 /// </summary>
 /// <typeparam name="TFilter">The type of filter condition</typeparam>
@@ -17,15 +17,18 @@ public abstract class QueryRequest<TFilter>
     public required JmapId AccountId { get; init; }
 
     /// <summary>
-    /// Determines the set of Foos returned in the results.
-    /// If null, all objects in the account of this type are included.
+    /// Determines the set of records returned in the results.
+    /// If <see langword="null" />, all objects in the account of this type are included.
+    /// This property is declared as <see cref="object" /> so the model can represent either
+    /// a concrete filter condition of type <typeparamref name="TFilter" /> or a
+    /// <see cref="FilterOperator" /> tree.
     /// </summary>
     [JsonPropertyName("filter")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public object? Filter { get; init; }  // Can be FilterOperator or TFilter
 
     /// <summary>
-    /// Lists how to compare Foo records to determine sort order.
+    /// Lists how to compare records to determine sort order.
     /// If null or empty, the sort order is server-dependent but must be stable.
     /// </summary>
     [JsonPropertyName("sort")]
@@ -41,7 +44,7 @@ public abstract class QueryRequest<TFilter>
     public JmapInt Position { get; init; } = new(0);
 
     /// <summary>
-    /// A Foo id. If supplied, the position argument is ignored and the index of this id
+    /// An id in the result set. If supplied, the <see cref="Position" /> argument is ignored and the index of this id
     /// in the results is used instead.
     /// </summary>
     [JsonPropertyName("anchor")]
@@ -66,8 +69,7 @@ public abstract class QueryRequest<TFilter>
     public JmapUnsignedInt? Limit { get; init; }
 
     /// <summary>
-    /// Does the client wish to know the total number of results in the query?
-    /// Default: false.
+    /// Indicates whether the client wants the server to calculate the total number of results.
     /// </summary>
     [JsonPropertyName("calculateTotal")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
@@ -75,7 +77,7 @@ public abstract class QueryRequest<TFilter>
 }
 
 /// <summary>
-/// Generic Foo/query request.
+/// Generic <c>*/query</c> request that accepts any filter payload.
 /// </summary>
 public class QueryRequest : QueryRequest<object>
 {

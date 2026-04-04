@@ -12,8 +12,8 @@ public class JmapParticipant : JSCalendar.Net.Participant
 {
     /// <summary>
     /// A URI as defined by RFC 3986 or any other IANA-registered form for a URI.
-    /// It is the same as the CAL-ADDRESS value of an ATTENDEE or ORGANIZER in 
-    /// iCalendar (RFC 5545) — it globally identifies a particular participant, 
+    /// It is the same as the CAL-ADDRESS value of an ATTENDEE or ORGANIZER in
+    /// iCalendar (RFC 5545) - it globally identifies a particular participant,
     /// even across different events.
     /// Examples: "mailto:alice@example.com", "https://example.com/principals/alice"
     /// </summary>

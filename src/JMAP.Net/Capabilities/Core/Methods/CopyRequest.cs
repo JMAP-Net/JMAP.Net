@@ -4,7 +4,7 @@ using JMAP.Net.Capabilities.Core.Types;
 namespace JMAP.Net.Capabilities.Core.Methods;
 
 /// <summary>
-/// Base request class for Foo/copy methods.
+/// Base request class for <c>*/copy</c> methods.
 /// Allows copying records between two different accounts.
 /// As per RFC 8620, Section 5.4.
 /// </summary>
@@ -18,7 +18,7 @@ public abstract class CopyRequest<TObject>
     public required JmapId FromAccountId { get; init; }
 
     /// <summary>
-    /// A state string as returned by Foo/get for the fromAccount.
+    /// A state string as returned by the corresponding <c>*/get</c> method for the source account.
     /// If supplied, the string must match the current state when reading data to be copied.
     /// If null, data will be read from the current state.
     /// </summary>
@@ -34,7 +34,7 @@ public abstract class CopyRequest<TObject>
     public required JmapId AccountId { get; init; }
 
     /// <summary>
-    /// A state string as returned by Foo/get for the destination account.
+    /// A state string as returned by the corresponding <c>*/get</c> method for the destination account.
     /// If supplied, the string must match the current state of the accountId.
     /// If null, any changes will be applied to the current state.
     /// </summary>
@@ -43,24 +43,23 @@ public abstract class CopyRequest<TObject>
     public string? IfInState { get; init; }
 
     /// <summary>
-    /// A map of creation id to Foo object.
-    /// The Foo object MUST contain an id property, which is the id (in the fromAccount)
-    /// of the record to be copied.
+    /// A map of creation id to an object to copy.
+    /// Each value identifies the source record to copy by including its id from
+    /// <see cref="FromAccountId" />.
     /// </summary>
     [JsonPropertyName("create")]
     public required Dictionary<JmapId, TObject> Create { get; init; }
 
     /// <summary>
-    /// If true, an attempt will be made to destroy the original records that were
-    /// successfully copied.
-    /// Default: false.
+    /// If <see langword="true" />, the server attempts to destroy any source records that
+    /// were copied successfully.
     /// </summary>
     [JsonPropertyName("onSuccessDestroyOriginal")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public bool OnSuccessDestroyOriginal { get; init; } = false;
 
     /// <summary>
-    /// This argument is passed as the ifInState argument to the implicit Foo/set call
+    /// This argument is passed as the <c>ifInState</c> argument to the implicit <c>*/set</c> call
     /// if onSuccessDestroyOriginal is true.
     /// </summary>
     [JsonPropertyName("destroyFromIfInState")]
@@ -69,7 +68,7 @@ public abstract class CopyRequest<TObject>
 }
 
 /// <summary>
-/// Generic Foo/copy request.
+/// Generic <c>*/copy</c> request.
 /// </summary>
 public class CopyRequest : CopyRequest<object>
 {

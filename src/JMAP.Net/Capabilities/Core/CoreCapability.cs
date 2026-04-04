@@ -9,6 +9,9 @@ namespace JMAP.Net.Capabilities.Core;
 /// </summary>
 public class CoreCapability
 {
+    /// <summary>
+    /// The capability URI for the JMAP Core capability.
+    /// </summary>
     public const string CapabilityUri = "urn:ietf:params:jmap:core";
 
     /// <summary>

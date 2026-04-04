@@ -1,0 +1,68 @@
+{
+  "accountId": "account1",
+  "oldState": "state-1",
+  "newState": "state-2",
+  "created": {
+    "temp-cal-1": {
+      "id": "cal1",
+      "name": "Team Calendar",
+      "description": "Shared calendar",
+      "color": "#00AAFF",
+      "sortOrder": 5,
+      "isSubscribed": true,
+      "isVisible": true,
+      "isDefault": false,
+      "includeInAvailability": "all",
+      "timeZone": "Europe/Berlin",
+      "shareWith": {
+        "principal1": {
+          "mayReadFreeBusy": true,
+          "mayReadItems": true,
+          "mayWriteAll": false,
+          "mayWriteOwn": true,
+          "mayUpdatePrivate": true,
+          "mayRSVP": true,
+          "mayAdmin": false,
+          "mayDelete": false
+        }
+      },
+      "myRights": {
+        "mayReadFreeBusy": true,
+        "mayReadItems": true,
+        "mayWriteAll": true,
+        "mayWriteOwn": true,
+        "mayUpdatePrivate": true,
+        "mayRSVP": true,
+        "mayAdmin": true,
+        "mayDelete": false
+      }
+    }
+  },
+  "updated": {
+    "cal2": null
+  },
+  "destroyed": [
+    "cal3"
+  ],
+  "notCreated": {
+    "temp-cal-2": {
+      "type": "invalidProperties",
+      "description": "name is required",
+      "properties": [
+        "name"
+      ]
+    }
+  },
+  "notUpdated": {
+    "cal4": {
+      "type": "notFound",
+      "description": "Calendar not found"
+    }
+  },
+  "notDestroyed": {
+    "cal5": {
+      "type": "forbidden",
+      "description": "Calendar cannot be destroyed"
+    }
+  }
+}

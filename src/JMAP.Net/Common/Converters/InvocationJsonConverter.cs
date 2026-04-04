@@ -9,6 +9,13 @@ namespace JMAP.Net.Common.Converters;
 /// </summary>
 public class InvocationJsonConverter : JsonConverter<Invocation>
 {
+    /// <summary>
+    /// Reads an <see cref="Invocation" /> from its compact JSON array representation.
+    /// </summary>
+    /// <param name="reader">The reader positioned at the JSON value.</param>
+    /// <param name="typeToConvert">The target type being converted.</param>
+    /// <param name="options">The serializer options to use for nested values.</param>
+    /// <returns>The deserialized <see cref="Invocation" /> instance.</returns>
     public override Invocation Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.StartArray)
@@ -36,6 +43,13 @@ public class InvocationJsonConverter : JsonConverter<Invocation>
         };
     }
 
+    /// <summary>
+    /// Writes an <see cref="Invocation" /> as the compact JSON array representation
+    /// <c>[name, arguments, methodCallId]</c>.
+    /// </summary>
+    /// <param name="writer">The writer to write JSON to.</param>
+    /// <param name="value">The value to serialize.</param>
+    /// <param name="options">The serializer options to use for nested values.</param>
     public override void Write(Utf8JsonWriter writer, Invocation value, JsonSerializerOptions options)
     {
         writer.WriteStartArray();

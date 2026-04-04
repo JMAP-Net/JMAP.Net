@@ -8,15 +8,6 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.CalendarEvent;
 /// </summary>
 public class CalendarEventQueryResponse : QueryResponse
 {
-    // Inherits all properties from QueryResponse:
-    // - AccountId
-    // - QueryState
-    // - CanCalculateChanges
-    // - Position
-    // - Ids (array of CalendarEvent ids)
-    // - Total (optional)
-    // - Limit (optional)
-    
-    // Note: If expandRecurrences was true, synthetic ids may be returned
-    // representing individual instances of recurring events.
+    // If expandRecurrences was true, synthetic ids may be returned
+    // for individual instances of recurring events.
 }

@@ -13,9 +13,19 @@ namespace JMAP.Net.Capabilities.Core.Types;
 [JsonConverter(typeof(JmapDateJsonConverter))]
 public readonly struct JmapDate(DateTimeOffset value) : IEquatable<JmapDate>, IComparable<JmapDate>
 {
+    /// <summary>
+    /// Gets the underlying date-time value.
+    /// </summary>
     public DateTimeOffset Value { get; } = value;
 
+    /// <summary>
+    /// Converts a <see cref="JmapDate" /> to its underlying <see cref="DateTimeOffset" /> value.
+    /// </summary>
     public static implicit operator DateTimeOffset(JmapDate date) => date.Value;
+
+    /// <summary>
+    /// Converts a <see cref="DateTimeOffset" /> to a <see cref="JmapDate" />.
+    /// </summary>
     public static implicit operator JmapDate(DateTimeOffset value) => new(value);
 
     /// <summary>
@@ -44,16 +54,53 @@ public readonly struct JmapDate(DateTimeOffset value) : IEquatable<JmapDate>, IC
         return formatted.ToUpperInvariant();
     }
 
+    /// <summary>
+    /// Indicates whether this value is equal to another <see cref="JmapDate" />.
+    /// </summary>
     public bool Equals(JmapDate other) => Value.Equals(other.Value);
+
+    /// <summary>
+    /// Indicates whether this value is equal to another object.
+    /// </summary>
     public override bool Equals(object? obj) => obj is JmapDate other && Equals(other);
+
+    /// <summary>
+    /// Returns a hash code for the current value.
+    /// </summary>
     public override int GetHashCode() => Value.GetHashCode();
 
+    /// <summary>
+    /// Compares this value with another <see cref="JmapDate" />.
+    /// </summary>
     public int CompareTo(JmapDate other) => Value.CompareTo(other.Value);
 
+    /// <summary>
+    /// Returns <see langword="true" /> if two values are equal.
+    /// </summary>
     public static bool operator ==(JmapDate left, JmapDate right) => left.Equals(right);
+
+    /// <summary>
+    /// Returns <see langword="true" /> if two values are not equal.
+    /// </summary>
     public static bool operator !=(JmapDate left, JmapDate right) => !left.Equals(right);
+
+    /// <summary>
+    /// Returns <see langword="true" /> if the left value is less than the right value.
+    /// </summary>
     public static bool operator <(JmapDate left, JmapDate right) => left.CompareTo(right) < 0;
+
+    /// <summary>
+    /// Returns <see langword="true" /> if the left value is greater than the right value.
+    /// </summary>
     public static bool operator >(JmapDate left, JmapDate right) => left.CompareTo(right) > 0;
+
+    /// <summary>
+    /// Returns <see langword="true" /> if the left value is less than or equal to the right value.
+    /// </summary>
     public static bool operator <=(JmapDate left, JmapDate right) => left.CompareTo(right) <= 0;
+
+    /// <summary>
+    /// Returns <see langword="true" /> if the left value is greater than or equal to the right value.
+    /// </summary>
     public static bool operator >=(JmapDate left, JmapDate right) => left.CompareTo(right) >= 0;
 }

@@ -4,7 +4,7 @@ using JMAP.Net.Capabilities.Core.Types;
 namespace JMAP.Net.Capabilities.Core.Methods;
 
 /// <summary>
-/// Base request class for Foo/get methods.
+/// Base request class for <c>*/get</c> methods.
 /// As per RFC 8620, Section 5.1.
 /// </summary>
 /// <typeparam name="TObject">The type of object being fetched</typeparam>
@@ -17,8 +17,8 @@ public abstract class GetRequest<TObject>
     public required JmapId AccountId { get; init; }
 
     /// <summary>
-    /// The ids of the Foo objects to return.
-    /// If null, then all records of the data type are returned
+    /// The ids of the objects to return.
+    /// If <see langword="null" />, all records of the data type are returned
     /// (if supported and within maxObjectsInGet limit).
     /// </summary>
     [JsonPropertyName("ids")]
@@ -36,7 +36,7 @@ public abstract class GetRequest<TObject>
 }
 
 /// <summary>
-/// Generic Foo/get request.
+/// Generic <c>*/get</c> request.
 /// </summary>
 public class GetRequest : GetRequest<object>
 {

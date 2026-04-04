@@ -1,0 +1,17 @@
+{
+  "accountId": "account1",
+  "filter": {
+    "name": "Team",
+    "isSubscribed": true
+  },
+  "sort": [
+    {
+      "property": "name",
+      "isAscending": true
+    }
+  ],
+  "sinceQueryState": "query-state-1",
+  "maxChanges": 10,
+  "upToId": "cal2",
+  "calculateTotal": true
+}

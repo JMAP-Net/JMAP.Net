@@ -5,9 +5,9 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.CalendarEventNotification;
 
 /// <summary>
 /// Request for CalendarEventNotification/set method.
-/// Note: CalendarEventNotifications are server-created and read-only.
-/// Only "destroy" is supported; any attempt to create/update 
-/// MUST be rejected with a forbidden SetError.
+/// Calendar event notifications are server-created, so this request type mainly exists to
+/// model the protocol shape for destroying existing notifications.
+/// Servers are expected to reject create and update operations for this method.
 /// As per RFC 8984, Section 6.3.
 /// </summary>
 public class CalendarEventNotificationSetRequest : SetRequest<JMAP.Net.Capabilities.Calendars.Types.CalendarEventNotification, PatchObject>

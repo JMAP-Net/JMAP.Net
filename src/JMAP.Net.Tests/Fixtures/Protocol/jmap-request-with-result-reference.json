@@ -1,0 +1,36 @@
+{
+  "using": [
+    "urn:ietf:params:jmap:core"
+  ],
+  "methodCalls": [
+    [
+      "Item/query",
+      {
+        "accountId": "account1",
+        "filter": {
+          "inCategory": "default"
+        }
+      },
+      "c1"
+    ],
+    [
+      "Item/get",
+      {
+        "accountId": "account1",
+        "#ids": {
+          "resultOf": "c1",
+          "name": "Item/query",
+          "path": "/ids"
+        },
+        "properties": [
+          "id",
+          "name"
+        ]
+      },
+      "c2"
+    ]
+  ],
+  "createdIds": {
+    "temp1": "item1"
+  }
+}

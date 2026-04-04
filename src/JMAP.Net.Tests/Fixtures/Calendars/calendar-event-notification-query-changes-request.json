@@ -1,0 +1,18 @@
+{
+  "accountId": "account1",
+  "filter": {
+    "type": "Updated",
+    "calendarEventIds": [
+      "event1"
+    ]
+  },
+  "sort": [
+    {
+      "property": "created"
+    }
+  ],
+  "sinceQueryState": "query-state-1",
+  "maxChanges": 10,
+  "upToId": "notif2",
+  "calculateTotal": true
+}

@@ -8,9 +8,4 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.Calendar;
 /// </summary>
 public class CalendarGetResponse : GetResponse<JMAP.Net.Capabilities.Calendars.Types.Calendar>
 {
-    // Inherits all properties from GetResponse<CalendarType>:
-    // - AccountId
-    // - State
-    // - List (array of Calendar objects)
-    // - NotFound (array of ids not found)
 }

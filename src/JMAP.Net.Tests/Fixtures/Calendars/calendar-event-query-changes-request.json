@@ -1,0 +1,20 @@
+{
+  "accountId": "account1",
+  "filter": {
+    "inCalendars": [
+      "cal1"
+    ],
+    "after": "2026-04-01",
+    "before": "2026-05-01"
+  },
+  "sort": [
+    {
+      "property": "start",
+      "isAscending": true
+    }
+  ],
+  "sinceQueryState": "query-state-1",
+  "maxChanges": 10,
+  "upToId": "event2",
+  "calculateTotal": true
+}

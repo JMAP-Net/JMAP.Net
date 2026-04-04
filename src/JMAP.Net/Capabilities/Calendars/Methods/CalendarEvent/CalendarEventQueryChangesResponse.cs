@@ -8,11 +8,4 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.CalendarEvent;
 /// </summary>
 public class CalendarEventQueryChangesResponse : QueryChangesResponse
 {
-    // Inherits all properties from QueryChangesResponse:
-    // - AccountId
-    // - OldQueryState
-    // - NewQueryState
-    // - Total (optional)
-    // - Removed (array of ids)
-    // - Added (array of AddedItem with id and index)
 }

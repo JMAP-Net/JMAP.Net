@@ -1,0 +1,24 @@
+{
+  "accountId": "account1",
+  "ifInState": "state-1",
+  "create": {
+    "temp-ident-1": {
+      "id": "ident1",
+      "name": "",
+      "scheduleId": "mailto:user@example.com",
+      "sendTo": {
+        "imip": "mailto:user@example.com"
+      },
+      "isDefault": false
+    }
+  },
+  "update": {
+    "ident2": {
+      "name": "Updated Name"
+    }
+  },
+  "destroy": [
+    "ident3"
+  ],
+  "onSuccessSetIsDefault": "ident1"
+}

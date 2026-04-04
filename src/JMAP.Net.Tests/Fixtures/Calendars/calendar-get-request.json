@@ -1,0 +1,12 @@
+{
+  "accountId": "account1",
+  "ids": [
+    "cal1",
+    "cal2"
+  ],
+  "properties": [
+    "name",
+    "color",
+    "myRights"
+  ]
+}

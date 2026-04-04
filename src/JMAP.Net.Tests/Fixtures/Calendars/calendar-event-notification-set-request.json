@@ -1,0 +1,8 @@
+{
+  "accountId": "account1",
+  "ifInState": "state-1",
+  "destroy": [
+    "notif1",
+    "notif2"
+  ]
+}

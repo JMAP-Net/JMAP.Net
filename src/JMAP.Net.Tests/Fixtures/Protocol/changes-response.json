@@ -1,0 +1,16 @@
+{
+  "accountId": "account1",
+  "oldState": "state-1",
+  "newState": "state-2",
+  "hasMoreChanges": false,
+  "created": [
+    "item4"
+  ],
+  "updated": [
+    "item2",
+    "item3"
+  ],
+  "destroyed": [
+    "item1"
+  ]
+}

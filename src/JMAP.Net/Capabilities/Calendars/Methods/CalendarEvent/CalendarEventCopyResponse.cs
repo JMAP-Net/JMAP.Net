@@ -8,11 +8,4 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.CalendarEvent;
 /// </summary>
 public class CalendarEventCopyResponse : CopyResponse<JMAP.Net.Capabilities.Calendars.Types.CalendarEvent>
 {
-    // Inherits all properties from CopyResponse<CalendarEventType>:
-    // - FromAccountId
-    // - AccountId
-    // - OldState
-    // - NewState
-    // - Created (map of creation id to CalendarEvent)
-    // - NotCreated (map of creation id to SetError)
 }

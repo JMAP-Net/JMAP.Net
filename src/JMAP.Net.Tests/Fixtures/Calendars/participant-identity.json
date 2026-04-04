@@ -1,0 +1,9 @@
+{
+  "id": "ident1",
+  "name": "",
+  "scheduleId": "mailto:user@example.com",
+  "sendTo": {
+    "imip": "mailto:user@example.com"
+  },
+  "isDefault": false
+}

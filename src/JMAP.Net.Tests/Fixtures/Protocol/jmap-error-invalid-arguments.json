@@ -1,0 +1,7 @@
+{
+  "type": "invalidArguments",
+  "description": "The 'ids' argument is invalid.",
+  "arguments": [
+    "ids"
+  ]
+}

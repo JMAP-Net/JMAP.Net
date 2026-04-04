@@ -3,16 +3,21 @@
 [![.NET](https://img.shields.io/badge/.NET-10.0-purple)](https://dotnet.microsoft.com/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-A modern .NET implementation of [RFC 8620 (JMAP Core)](https://jmap.io/spec-core.html) - the JSON Meta Application Protocol.
+A modern .NET library for [RFC 8620 (JMAP Core)](https://jmap.io/spec-core.html) and JMAP Calendars models, protocol envelopes, and JSON serialization.
+
+## Status
+
+JMAP.Net currently focuses on strongly-typed protocol models, value types, session objects, and `System.Text.Json` converters for JMAP Core and JMAP Calendars.
+It is not a full client or server runtime, and it does not currently claim complete end-to-end RFC implementation across all JMAP capabilities.
 
 ## Features
 
-- **Full RFC 8620 Compliance** - Complete implementation of the JMAP Core specification
-- **Native .NET 10** - Built with the latest .NET features
-- **Type-Safe** - Strongly-typed models with comprehensive validation
-- **JSON Serialization** - Seamless integration with System.Text.Json
-- **Standard Methods** - Support for /get, /set, /changes, /query, /queryChanges, /copy
-- **Extensible** - Designed to work with JMAP extensions (Mail, Calendars, Contacts)
+- **Typed Protocol Models** - Strongly-typed JMAP Core and Calendar request/response models
+- **Native .NET 10** - Built for modern .NET with nullable reference types enabled
+- **JSON Serialization** - Custom `System.Text.Json` converters for JMAP-specific value types and envelopes
+- **Core Method Contracts** - Models for /get, /set, /changes, /query, /queryChanges, and /copy
+- **JMAP Calendars Support** - Calendar, CalendarEvent, ParticipantIdentity, and CalendarEventNotification contracts on top of `JSCalendar.Net`
+- **Fixture-Tested** - Contract coverage with TUnit for core and calendar serialization/deserialization
 
 ## Installation
 
@@ -269,25 +274,40 @@ var setError = new SetError
 };
 ```
 
+## Testing
+
+The repository includes fixture-based contract tests built with TUnit. These tests cover:
+
+- Core value types and converters
+- JMAP request/response envelopes
+- Core method contracts
+- JMAP Calendars request/response contracts
+
+Run the test suite locally with:
+
+```bash
+dotnet test --solution src/JMAP.Net.slnx -c Release
+```
+
 ## Architecture
 
-JMAP.Net follows a modular architecture with clear separation between Core protocol and Extensions:
+JMAP.Net follows a modular architecture with clear separation between the core protocol layer and extensions:
 
 ### Core Protocol (RFC 8620)
 - **JMAP.Net.Capabilities.Core** - Core data types (JmapId, JmapInt, JmapDate, CoreCapability)
 - **JMAP.Net.Common.Session** - Session and account management
 - **JMAP.Net.Common.Protocol** - Request/Response/Invocation structures
-- **JMAP.Net.Capabilities.Core.Methods** - Standard JMAP methods (/get, /set, /changes, /query, /copy)
+- **JMAP.Net.Capabilities.Core.Methods** - Standard JMAP method contracts (/get, /set, /changes, /query, /queryChanges, /copy)
 - **JMAP.Net.Common.Errors** - Error types and problem details
 - **JMAP.Net.Common.Converters** - JSON converters for custom types
 
 ### Extensions
 - **JMAP.Net.Capabilities.Calendars** - JMAP Calendars implementation (RFC 8984, integrates with JSCalendar.Net)
-- **JMAP.Net.Capabilities.Contacts** - (Planned) JMAP Contacts
+- Additional capabilities can be added incrementally on top of the shared Core contracts
 
 ## JMAP Calendar Extensions
 
-JMAP.Net includes full support for JMAP Calendars (RFC 8984) with extensions to JSCalendar for JMAP-specific features.
+JMAP.Net includes typed support for JMAP Calendars (RFC 8984) with extensions to JSCalendar for JMAP-specific features.
 
 ### Calendar Event Sharing Properties
 
@@ -365,7 +385,8 @@ CalendarEventNotification objects track changes made by other users to shared ca
 ```csharp
 using JMAP.Net.Capabilities.Calendars;
 using JMAP.Net.Capabilities.Calendars.Types;
-using JMAP.Net.Capabilities.Calendars.Methods.CalendarEvent;
+using JMAP.Net.Capabilities.Calendars.Methods.CalendarEventNotification;
+using JMAP.Net.Capabilities.Core.Methods.Query;
 
 // Query recent notifications
 var queryRequest = new CalendarEventNotificationQueryRequest
@@ -429,20 +450,23 @@ Contributions are welcome! Please:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## RFC 8620 Compliance
+## Implemented Scope
 
-This library implements the complete JMAP Core specification as defined in [RFC 8620](https://jmap.io/spec-core.html).
+The library currently covers these areas:
 
-**Implemented Sections:**
+- RFC 8620 core value types and protocol envelopes
+- Session and capability models
+- Request/response contracts for the standard core methods
+- Structure-level support for binary data related models
+- JMAP Calendars models and method contracts (RFC 8984)
 
-- Section 1: Introduction and Data Types
-- Section 2: The JMAP Session Resource
-- Section 3: Structured Data Exchange (Request/Response)
-- Section 4: The Core/echo Method
-- Section 5: Standard Methods (/get, /set, /changes, /query, /queryChanges, /copy)
-- Section 6: Binary Data (Partial - structures only)
-- Section 7: Push Notifications (Planned)
-- Section 8: Security Considerations
+Areas intentionally not claimed as complete at this time:
+
+- Full client runtime behavior
+- Full server runtime behavior
+- Transport-level push notification implementation
+- Additional capabilities such as Mail or Contacts
+- Full interoperability certification against every RFC behavior edge case
 
 ## Resources
 

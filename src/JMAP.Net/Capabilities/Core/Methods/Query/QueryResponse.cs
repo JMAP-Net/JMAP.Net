@@ -4,7 +4,7 @@ using JMAP.Net.Capabilities.Core.Types;
 namespace JMAP.Net.Capabilities.Core.Methods.Query;
 
 /// <summary>
-/// Base response class for Foo/query methods.
+/// Base response class for <c>*/query</c> methods.
 /// As per RFC 8620, Section 5.5.
 /// </summary>
 public class QueryResponse
@@ -23,7 +23,8 @@ public class QueryResponse
     public required string QueryState { get; init; }
 
     /// <summary>
-    /// True if the server supports calling Foo/queryChanges with these filter/sort parameters.
+    /// Indicates whether the server supports calling the corresponding <c>*/queryChanges</c>
+    /// method with these filter and sort parameters.
     /// </summary>
     [JsonPropertyName("canCalculateChanges")]
     public required bool CanCalculateChanges { get; init; }
@@ -35,13 +36,13 @@ public class QueryResponse
     public required JmapUnsignedInt Position { get; init; }
 
     /// <summary>
-    /// The list of ids for each Foo in the query results.
+    /// The list of ids in the query results.
     /// </summary>
     [JsonPropertyName("ids")]
     public required List<JmapId> Ids { get; init; }
 
     /// <summary>
-    /// The total number of Foos in the results (given the filter).
+    /// The total number of records in the results for the given filter.
     /// Only present if calculateTotal was true in the request.
     /// </summary>
     [JsonPropertyName("total")]

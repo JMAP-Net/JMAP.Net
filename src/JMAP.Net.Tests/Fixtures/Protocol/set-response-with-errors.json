@@ -1,0 +1,39 @@
+{
+  "accountId": "account1",
+  "oldState": "state-1",
+  "newState": "state-2",
+  "created": {
+    "temp1": {
+      "id": "item1"
+    }
+  },
+  "updated": {
+    "item2": {
+      "updatedAt": "2026-03-29T12:00:00Z"
+    }
+  },
+  "destroyed": [
+    "item3"
+  ],
+  "notCreated": {
+    "temp2": {
+      "type": "invalidProperties",
+      "description": "name is required",
+      "properties": [
+        "name"
+      ]
+    }
+  },
+  "notUpdated": {
+    "item4": {
+      "type": "notFound",
+      "description": "Object does not exist"
+    }
+  },
+  "notDestroyed": {
+    "item5": {
+      "type": "forbidden",
+      "description": "Object cannot be destroyed"
+    }
+  }
+}

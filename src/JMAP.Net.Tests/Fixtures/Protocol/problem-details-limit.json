@@ -1,0 +1,7 @@
+{
+  "type": "urn:ietf:params:jmap:error:limit",
+  "status": 429,
+  "detail": "The request exceeded the maximum number of method calls.",
+  "limit": "maxCallsInRequest",
+  "maxCallsInRequest": 16
+}

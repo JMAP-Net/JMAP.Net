@@ -1,0 +1,15 @@
+{
+  "accountId": "account1",
+  "oldState": "state-1",
+  "newState": "state-2",
+  "hasMoreChanges": false,
+  "created": [
+    "notif1"
+  ],
+  "updated": [
+    "notif2"
+  ],
+  "destroyed": [
+    "notif3"
+  ]
+}

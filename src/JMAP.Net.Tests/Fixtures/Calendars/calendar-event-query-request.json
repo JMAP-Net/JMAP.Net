@@ -1,0 +1,25 @@
+{
+  "expandRecurrences": true,
+  "timeZone": "Europe/Berlin",
+  "accountId": "account1",
+  "filter": {
+    "inCalendars": [
+      "cal1"
+    ],
+    "after": "2026-04-01",
+    "before": "2026-05-01",
+    "text": "design",
+    "owner": "Alice",
+    "participationStatus": "accepted"
+  },
+  "sort": [
+    {
+      "property": "start",
+      "isAscending": true
+    }
+  ],
+  "anchor": "event2",
+  "anchorOffset": -1,
+  "limit": 100,
+  "calculateTotal": true
+}

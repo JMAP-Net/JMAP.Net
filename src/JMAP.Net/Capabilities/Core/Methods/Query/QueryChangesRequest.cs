@@ -4,7 +4,7 @@ using JMAP.Net.Capabilities.Core.Types;
 namespace JMAP.Net.Capabilities.Core.Methods.Query;
 
 /// <summary>
-/// Base request class for Foo/queryChanges methods.
+/// Base request class for <c>*/queryChanges</c> methods.
 /// As per RFC 8620, Section 5.6.
 /// </summary>
 /// <typeparam name="TFilter">The type of filter condition</typeparam>
@@ -17,14 +17,17 @@ public abstract class QueryChangesRequest<TFilter>
     public required JmapId AccountId { get; init; }
 
     /// <summary>
-    /// The filter argument that was used with Foo/query.
+    /// The filter argument that was used with the corresponding <c>*/query</c> call.
+    /// This property is declared as <see cref="object" /> so the model can represent either
+    /// a concrete filter condition of type <typeparamref name="TFilter" /> or a
+    /// <see cref="FilterOperator" /> tree.
     /// </summary>
     [JsonPropertyName("filter")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public object? Filter { get; init; }  // Can be FilterOperator or TFilter
 
     /// <summary>
-    /// The sort argument that was used with Foo/query.
+    /// The sort argument that was used with the corresponding <c>*/query</c> call.
     /// </summary>
     [JsonPropertyName("sort")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -32,7 +35,7 @@ public abstract class QueryChangesRequest<TFilter>
 
     /// <summary>
     /// The current state of the query in the client.
-    /// This is the string returned as queryState in the Foo/query response.
+    /// This is the string returned as <c>queryState</c> in the corresponding <c>*/query</c> response.
     /// </summary>
     [JsonPropertyName("sinceQueryState")]
     public required string SinceQueryState { get; init; }
@@ -54,8 +57,8 @@ public abstract class QueryChangesRequest<TFilter>
     public JmapId? UpToId { get; init; }
 
     /// <summary>
-    /// Does the client wish to know the total number of results now in the query?
-    /// Default: false.
+    /// Indicates whether the client wants the server to calculate the current total number
+    /// of results for the query.
     /// </summary>
     [JsonPropertyName("calculateTotal")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
@@ -63,7 +66,7 @@ public abstract class QueryChangesRequest<TFilter>
 }
 
 /// <summary>
-/// Generic Foo/queryChanges request.
+/// Generic <c>*/queryChanges</c> request that accepts any filter payload.
 /// </summary>
 public class QueryChangesRequest : QueryChangesRequest<object>
 {

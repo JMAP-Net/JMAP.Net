@@ -9,12 +9,11 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.ParticipantIdentity;
 /// Request for ParticipantIdentity/set method.
 /// As per JMAP Calendars RFC, Section 3.3.
 /// </summary>
-public class
-    ParticipantIdentitySetRequest : SetRequest<JMAP.Net.Capabilities.Calendars.Types.ParticipantIdentity, PatchObject>
+public class ParticipantIdentitySetRequest : SetRequest<JMAP.Net.Capabilities.Calendars.Types.ParticipantIdentity, PatchObject>
 {
     /// <summary>
-    /// If an id is given, and all creates, updates and destroys succeed, the server will
-    /// try to set this identity as the default.
+    /// If set, and all creates, updates, and destroys succeed, the server attempts to make
+    /// the referenced identity the account's default participant identity.
     /// </summary>
     [JsonPropertyName("onSuccessSetIsDefault")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

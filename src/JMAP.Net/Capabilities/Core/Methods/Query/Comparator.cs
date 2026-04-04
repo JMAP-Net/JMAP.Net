@@ -9,14 +9,17 @@ namespace JMAP.Net.Capabilities.Core.Methods.Query;
 public class Comparator
 {
     /// <summary>
-    /// The name of the property on the Foo objects to compare.
+    /// The name of the property on the objects being queried to compare.
     /// </summary>
     [JsonPropertyName("property")]
     public required string Property { get; init; }
 
     /// <summary>
     /// If true, sort in ascending order. If false, sort in descending order.
-    /// Default: true.
+    /// The model initializes this property to <see langword="true" />.
+    /// Serialization note: because <see cref="JsonIgnoreCondition.WhenWritingDefault" />
+    /// uses the CLR default for <see cref="bool" />, <c>false</c> is omitted from JSON
+    /// while <c>true</c> is emitted explicitly.
     /// </summary>
     [JsonPropertyName("isAscending")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]

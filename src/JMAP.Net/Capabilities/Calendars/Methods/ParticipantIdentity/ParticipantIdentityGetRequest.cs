@@ -8,8 +8,4 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.ParticipantIdentity;
 /// </summary>
 public class ParticipantIdentityGetRequest : GetRequest<JMAP.Net.Capabilities.Calendars.Types.ParticipantIdentity>
 {
-    // Inherits all properties from GetRequest<ParticipantIdentityType>:
-    // - AccountId
-    // - Ids (nullable to fetch all)
-    // - Properties (nullable for all properties)
 }

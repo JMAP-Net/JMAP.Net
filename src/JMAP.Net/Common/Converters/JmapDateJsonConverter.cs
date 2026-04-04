@@ -10,6 +10,13 @@ namespace JMAP.Net.Common.Converters;
 /// </summary>
 public class JmapDateJsonConverter : JsonConverter<JmapDate>
 {
+    /// <summary>
+    /// Reads a <see cref="JmapDate" /> from a JSON string value.
+    /// </summary>
+    /// <param name="reader">The reader positioned at the JSON value.</param>
+    /// <param name="typeToConvert">The target type being converted.</param>
+    /// <param name="options">The serializer options.</param>
+    /// <returns>The deserialized <see cref="JmapDate" /> value.</returns>
     public override JmapDate Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var value = reader.GetString();
@@ -21,6 +28,12 @@ public class JmapDateJsonConverter : JsonConverter<JmapDate>
             : new JmapDate(dateTime);
     }
 
+    /// <summary>
+    /// Writes a <see cref="JmapDate" /> as a JSON string value.
+    /// </summary>
+    /// <param name="writer">The writer to write JSON to.</param>
+    /// <param name="value">The value to serialize.</param>
+    /// <param name="options">The serializer options.</param>
     public override void Write(Utf8JsonWriter writer, JmapDate value, JsonSerializerOptions options)
     {
         writer.WriteStringValue(value.ToString());

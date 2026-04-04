@@ -40,7 +40,7 @@ public class Calendar
 
     /// <summary>
     /// Defines the sort order of calendars when presented in the client's UI.
-    /// Must be an integer in the range 0 <= sortOrder < 2^31.
+    /// Must be an integer in the range 0 to 2^31 - 1.
     /// </summary>
     [JsonPropertyName("sortOrder")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]

@@ -1,0 +1,19 @@
+{
+  "accountId": "account1",
+  "filter": {
+    "name": "Team",
+    "usedForDataTypes": [
+      "event"
+    ],
+    "isSubscribed": true,
+    "sharedWith": "principal1"
+  },
+  "sort": [
+    {
+      "property": "name",
+      "collation": "i;unicode-casemap"
+    }
+  ],
+  "limit": 25,
+  "calculateTotal": true
+}

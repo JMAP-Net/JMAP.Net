@@ -1,0 +1,99 @@
+{
+  "fromAccountId": "source-account",
+  "accountId": "target-account",
+  "oldState": "state-1",
+  "newState": "state-2",
+  "created": {
+    "copy-event-1": {
+      "id": "event1",
+      "calendarIds": {
+        "cal1": true
+      },
+      "isDraft": true,
+      "isOrigin": true,
+      "utcStart": "2026-04-01T08:00:00Z",
+      "utcEnd": "2026-04-01T09:00:00Z",
+      "mayInviteSelf": true,
+      "mayInviteOthers": true,
+      "hideAttendees": true,
+      "@type": "Event",
+      "uid": "uid-1@example.com",
+      "relatedTo": null,
+      "prodId": null,
+      "created": null,
+      "updated": "2026-04-01T07:30:00+00:00",
+      "sequence": 0,
+      "method": null,
+      "title": "Design Review",
+      "description": "",
+      "descriptionContentType": "text/plain",
+      "showWithoutTime": false,
+      "locations": null,
+      "virtualLocations": null,
+      "links": null,
+      "locale": null,
+      "keywords": null,
+      "categories": null,
+      "color": null,
+      "recurrenceId": null,
+      "recurrenceIdTimeZone": null,
+      "recurrenceRules": null,
+      "excludedRecurrenceRules": null,
+      "recurrenceOverrides": null,
+      "excluded": false,
+      "priority": 0,
+      "freeBusyStatus": "busy",
+      "privacy": "public",
+      "replyTo": null,
+      "sentBy": null,
+      "participants": {
+        "alice": {
+          "@type": "Participant",
+          "name": "Alice",
+          "email": "alice@example.com",
+          "description": null,
+          "sendTo": null,
+          "kind": null,
+          "roles": {
+            "owner": true
+          },
+          "locationId": null,
+          "language": null,
+          "participationStatus": "accepted",
+          "participationComment": null,
+          "expectReply": false,
+          "scheduleAgent": "server",
+          "scheduleForceSend": false,
+          "scheduleSequence": 0,
+          "scheduleStatus": null,
+          "scheduleUpdated": null,
+          "sentBy": null,
+          "invitedBy": null,
+          "delegatedTo": null,
+          "delegatedFrom": null,
+          "memberOf": null,
+          "links": null,
+          "progress": null,
+          "progressUpdated": null,
+          "percentComplete": null
+        }
+      },
+      "requestStatus": null,
+      "useDefaultAlerts": false,
+      "alerts": null,
+      "localizations": null,
+      "timeZone": "Europe/Berlin",
+      "timeZones": null,
+      "start": "2026-04-01T10:00:00",
+      "duration": "PT1H",
+      "status": "confirmed"
+    }
+  },
+  "notCreated": {
+    "copy-event-2": {
+      "type": "alreadyExists",
+      "description": "A calendar event with this id already exists",
+      "existingId": "event-existing"
+    }
+  }
+}

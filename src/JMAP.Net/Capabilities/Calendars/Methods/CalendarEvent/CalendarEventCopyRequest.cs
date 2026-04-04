@@ -8,12 +8,4 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.CalendarEvent;
 /// </summary>
 public class CalendarEventCopyRequest : CopyRequest<JMAP.Net.Capabilities.Calendars.Types.CalendarEvent>
 {
-    // Inherits all properties from CopyRequest<CalendarEventType>:
-    // - FromAccountId
-    // - IfFromInState
-    // - AccountId
-    // - IfInState
-    // - Create (map of creation id to CalendarEvent with id to copy)
-    // - OnSuccessDestroyOriginal
-    // - DestroyFromIfInState
 }
