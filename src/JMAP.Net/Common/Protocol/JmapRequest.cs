@@ -7,7 +7,7 @@ namespace JMAP.Net.Common.Protocol;
 /// Represents a JMAP API request.
 /// As per RFC 8620, Section 3.3.
 /// </summary>
-public class JmapRequest
+public sealed class JmapRequest
 {
     /// <summary>
     /// The set of capabilities the client wishes to use.

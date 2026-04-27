@@ -3,12 +3,12 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using JMAP.Net.Capabilities.Core.Types;
 
-namespace JMAP.Net.Common.Converters;
+namespace JMAP.Net.Capabilities.Core.Converters;
 
 /// <summary>
 /// JSON converter for JmapDate type.
 /// </summary>
-public class JmapDateJsonConverter : JsonConverter<JmapDate>
+public sealed class JmapDateJsonConverter : JsonConverter<JmapDate>
 {
     /// <summary>
     /// Reads a <see cref="JmapDate" /> from a JSON string value.

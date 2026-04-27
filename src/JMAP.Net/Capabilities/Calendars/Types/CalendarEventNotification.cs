@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using JMAP.Net.Capabilities.Calendars.Converters;
 using JMAP.Net.Capabilities.Core.Types;
 using JSCalendar.Net;
 
@@ -10,7 +11,7 @@ namespace JMAP.Net.Capabilities.Calendars.Types;
 /// Notifications are stored in the same Account as the CalendarEvent that was changed.
 /// As per RFC 8984, Section 6.
 /// </summary>
-public class CalendarEventNotification
+public sealed class CalendarEventNotification
 {
     /// <summary>
     /// The id of the CalendarEventNotification.
@@ -45,7 +46,6 @@ public class CalendarEventNotification
     /// MUST be one of: "created", "updated", "destroyed".
     /// </summary>
     [JsonPropertyName("type")]
-    [JsonConverter(typeof(JsonStringEnumConverter))]
     public required CalendarEventNotificationType Type { get; init; }
 
     /// <summary>
@@ -85,6 +85,7 @@ public class CalendarEventNotification
 /// <summary>
 /// Notification type enumeration.
 /// </summary>
+[JsonConverter(typeof(CalendarEventNotificationTypeJsonConverter))]
 public enum CalendarEventNotificationType
 {
     /// <summary>Event was created</summary>
@@ -103,7 +104,7 @@ public enum CalendarEventNotificationType
 /// <summary>
 /// Information about the person who made a change to a calendar event.
 /// </summary>
-public class NotificationPerson
+public sealed class NotificationPerson
 {
     /// <summary>
     /// The name of the person who made the change.

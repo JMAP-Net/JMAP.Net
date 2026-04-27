@@ -6,6 +6,6 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.CalendarEvent;
 /// Request for CalendarEvent/queryChanges method.
 /// As per JMAP Calendars RFC, Section 5.12.
 /// </summary>
-public class CalendarEventQueryChangesRequest : QueryChangesRequest<CalendarEventFilterCondition>
+public sealed class CalendarEventQueryChangesRequest : QueryChangesRequest<CalendarEventFilterCondition>
 {
 }

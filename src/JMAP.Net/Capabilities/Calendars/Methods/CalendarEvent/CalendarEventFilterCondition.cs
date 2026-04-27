@@ -7,7 +7,7 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.CalendarEvent;
 /// Filter condition for CalendarEvent/query.
 /// As per JMAP Calendars RFC, Section 5.11.1.
 /// </summary>
-public class CalendarEventFilterCondition
+public sealed class CalendarEventFilterCondition
 {
     /// <summary>
     /// A list of calendar ids. An event must be in ANY of these calendars to match.

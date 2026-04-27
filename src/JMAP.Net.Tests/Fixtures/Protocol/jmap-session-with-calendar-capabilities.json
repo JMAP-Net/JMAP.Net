@@ -1,0 +1,50 @@
+{
+  "capabilities": {
+    "urn:ietf:params:jmap:core": {
+      "maxSizeUpload": 50000000,
+      "maxConcurrentUpload": 4,
+      "maxSizeRequest": 10000000,
+      "maxConcurrentRequests": 4,
+      "maxCallsInRequest": 16,
+      "maxObjectsInGet": 500,
+      "maxObjectsInSet": 500,
+      "collationAlgorithms": [
+        "i;unicode-casemap"
+      ]
+    },
+    "urn:ietf:params:jmap:calendars": {},
+    "urn:ietf:params:jmap:calendars:parse": {},
+    "urn:ietf:params:jmap:principals:availability": {}
+  },
+  "accounts": {
+    "account1": {
+      "name": "Primary Account",
+      "isPersonal": true,
+      "isReadOnly": false,
+      "accountCapabilities": {
+        "urn:ietf:params:jmap:calendars": {
+          "maxCalendarsPerEvent": 3,
+          "minDateTime": "1900-01-01T00:00:00Z",
+          "maxDateTime": "2100-01-01T00:00:00Z",
+          "maxExpandedQueryDuration": "P1Y",
+          "mayCreateCalendar": true
+        },
+        "urn:ietf:params:jmap:calendars:parse": {},
+        "urn:ietf:params:jmap:principals:availability": {
+          "maxAvailabilityDuration": "P90D"
+        }
+      }
+    }
+  },
+  "primaryAccounts": {
+    "urn:ietf:params:jmap:calendars": "account1",
+    "urn:ietf:params:jmap:calendars:parse": "account1",
+    "urn:ietf:params:jmap:principals:availability": "account1"
+  },
+  "username": "user@example.com",
+  "apiUrl": "https://jmap.example.com/api/",
+  "downloadUrl": "https://jmap.example.com/download/{accountId}/{blobId}/{name}?accept={type}",
+  "uploadUrl": "https://jmap.example.com/upload/{accountId}/",
+  "eventSourceUrl": "https://jmap.example.com/eventsource/?types={types}&closeafter={closeafter}&ping={ping}",
+  "state": "session-state"
+}

@@ -7,7 +7,7 @@ namespace JMAP.Net.Capabilities.Core.Methods;
 /// It is useful for testing if you have a valid authenticated connection to a JMAP API endpoint.
 /// As per RFC 8620, Section 4.
 /// </summary>
-public class CoreEchoRequest
+public sealed class CoreEchoRequest
 {
     /// <summary>
     /// Arguments to echo back. Can contain any valid JSON data.

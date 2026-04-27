@@ -8,7 +8,7 @@ namespace JMAP.Net.Capabilities.Core.Methods;
 /// Response for the Blob/copy method.
 /// As per RFC 8620, Section 6.3.
 /// </summary>
-public class BlobCopyResponse
+public sealed class BlobCopyResponse
 {
     /// <summary>
     /// The id of the account blobs were copied from.

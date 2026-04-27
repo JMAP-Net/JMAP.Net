@@ -8,7 +8,7 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.CalendarEvent;
 /// Request for CalendarEvent/set method.
 /// As per JMAP Calendars RFC, Section 5.9.
 /// </summary>
-public class CalendarEventSetRequest : SetRequest<JMAP.Net.Capabilities.Calendars.Types.CalendarEvent, PatchObject>
+public sealed class CalendarEventSetRequest : SetRequest<JMAP.Net.Capabilities.Calendars.Types.CalendarEvent, PatchObject>
 {
     /// <summary>
     /// If true, any changes to scheduled events will be sent to all participants

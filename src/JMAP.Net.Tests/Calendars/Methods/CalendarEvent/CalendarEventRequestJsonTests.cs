@@ -214,4 +214,30 @@ public class CalendarEventRequestJsonTests
         await Assert.That(deserialized.OnSuccessDestroyOriginal).IsTrue();
         await Assert.That(deserialized.DestroyFromIfInState).IsEqualTo("source-state-2");
     }
+
+    [Test]
+    public async Task CalendarEventParseRequest_WhenSerialized_ShouldMatchFixture()
+    {
+        var request = new CalendarEventParseRequest
+        {
+            AccountId = new JmapId("account1"),
+            BlobIds =
+            [
+                new JmapId("blob1"),
+                new JmapId("blob2")
+            ]
+        };
+
+        var json = JsonSerializer.Serialize(request);
+        await JsonAssert.AreEqualAsync(json, Path.Combine("Calendars", "calendar-event-parse-request.json"));
+
+        var deserialized = JsonSerializer.Deserialize<CalendarEventParseRequest>(
+            await FixtureLoader.LoadTextAsync(Path.Combine("Calendars", "calendar-event-parse-request.json")));
+
+        await Assert.That(deserialized).IsNotNull();
+        using var _ = Assert.Multiple();
+        await Assert.That(deserialized!.AccountId).IsEqualTo(new JmapId("account1"));
+        await Assert.That(deserialized.BlobIds[0]).IsEqualTo(new JmapId("blob1"));
+        await Assert.That(deserialized.BlobIds[1]).IsEqualTo(new JmapId("blob2"));
+    }
 }

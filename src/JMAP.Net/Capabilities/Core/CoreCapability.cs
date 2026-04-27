@@ -7,7 +7,7 @@ namespace JMAP.Net.Capabilities.Core;
 /// Represents the core JMAP capability as defined in RFC 8620, Section 2.
 /// URN: urn:ietf:params:jmap:core
 /// </summary>
-public class CoreCapability
+public sealed class CoreCapability
 {
     /// <summary>
     /// The capability URI for the JMAP Core capability.

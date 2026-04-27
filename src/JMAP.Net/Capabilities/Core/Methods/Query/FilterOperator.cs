@@ -6,7 +6,7 @@ namespace JMAP.Net.Capabilities.Core.Methods.Query;
 /// A filter operator that combines multiple filter conditions.
 /// As per RFC 8620, Section 5.5.
 /// </summary>
-public class FilterOperator
+public sealed class FilterOperator
 {
     /// <summary>
     /// The operator type: "AND", "OR", or "NOT".

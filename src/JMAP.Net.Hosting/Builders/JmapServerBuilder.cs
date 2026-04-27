@@ -101,6 +101,23 @@ public sealed class JmapServerBuilder
         });
     }
 
+    /// <summary>
+    /// Sets the maximum number of method calls accepted in a single JMAP request.
+    /// </summary>
+    /// <param name="maxCalls">The maximum number of method calls.</param>
+    /// <returns>The current builder instance.</returns>
+    public JmapServerBuilder SetMaxCallsInRequest(int maxCalls)
+    {
+        if (maxCalls < 1)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(maxCalls),
+                "The maximum number of method calls must be greater than zero.");
+        }
+
+        return Configure(options => options.MaxCallsInRequest = maxCalls);
+    }
+
     /// <inheritdoc />
     [EditorBrowsable(EditorBrowsableState.Never)]
     public override bool Equals(object? obj) => base.Equals(obj);

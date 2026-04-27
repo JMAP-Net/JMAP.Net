@@ -1,0 +1,13 @@
+{
+  "accountId": "account1",
+  "id": "principal1",
+  "utcStart": "2026-04-01T00:00:00Z",
+  "utcEnd": "2026-04-02T00:00:00Z",
+  "showDetails": true,
+  "eventProperties": [
+    "id",
+    "title",
+    "utcStart",
+    "utcEnd"
+  ]
+}

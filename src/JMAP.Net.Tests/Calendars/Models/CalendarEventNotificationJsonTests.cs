@@ -40,4 +40,12 @@ public class CalendarEventNotificationJsonTests
         await Assert.That(notification.ChangedBy.PrincipalId).IsEqualTo(new JmapId("principal1"));
         await Assert.That(notification.EventPatch).IsNotNull();
     }
+
+    [Test]
+    public async Task CalendarEventNotificationType_WhenSerialized_ShouldUseRfcStringValues()
+    {
+        await Assert.That(JsonSerializer.Serialize(CalendarEventNotificationType.Created)).IsEqualTo("\"created\"");
+        await Assert.That(JsonSerializer.Serialize(CalendarEventNotificationType.Updated)).IsEqualTo("\"updated\"");
+        await Assert.That(JsonSerializer.Serialize(CalendarEventNotificationType.Destroyed)).IsEqualTo("\"destroyed\"");
+    }
 }

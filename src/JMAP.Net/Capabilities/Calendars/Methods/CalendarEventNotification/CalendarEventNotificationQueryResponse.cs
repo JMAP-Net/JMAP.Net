@@ -7,6 +7,6 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.CalendarEventNotification;
 /// Response for CalendarEventNotification/query method.
 /// As per RFC 8984, Section 6.4.
 /// </summary>
-public class CalendarEventNotificationQueryResponse : QueryResponse
+public sealed class CalendarEventNotificationQueryResponse : QueryResponse
 {
 }

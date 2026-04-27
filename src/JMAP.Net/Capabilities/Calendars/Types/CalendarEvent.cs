@@ -8,7 +8,7 @@ namespace JMAP.Net.Capabilities.Calendars.Types;
 /// Represents a JMAP CalendarEvent - a JSCalendar Event with additional JMAP properties.
 /// As per JMAP Calendars RFC, Section 5.
 /// </summary>
-public class CalendarEvent : Event
+public sealed class CalendarEvent : Event
 {
     /// <summary>
     /// The id of the CalendarEvent (JMAP-specific, not the JSCalendar uid).

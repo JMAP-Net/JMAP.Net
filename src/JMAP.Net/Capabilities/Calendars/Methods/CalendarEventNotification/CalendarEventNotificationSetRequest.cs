@@ -10,6 +10,6 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.CalendarEventNotification;
 /// Servers are expected to reject create and update operations for this method.
 /// As per RFC 8984, Section 6.3.
 /// </summary>
-public class CalendarEventNotificationSetRequest : SetRequest<JMAP.Net.Capabilities.Calendars.Types.CalendarEventNotification, PatchObject>
+public sealed class CalendarEventNotificationSetRequest : SetRequest<JMAP.Net.Capabilities.Calendars.Types.CalendarEventNotification, PatchObject>
 {
 }

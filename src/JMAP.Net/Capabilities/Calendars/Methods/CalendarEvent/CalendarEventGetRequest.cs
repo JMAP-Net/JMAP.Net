@@ -8,7 +8,7 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.CalendarEvent;
 /// Request for CalendarEvent/get method.
 /// As per JMAP Calendars RFC, Section 5.7.
 /// </summary>
-public class CalendarEventGetRequest : GetRequest<JMAP.Net.Capabilities.Calendars.Types.CalendarEvent>
+public sealed class CalendarEventGetRequest : GetRequest<JMAP.Net.Capabilities.Calendars.Types.CalendarEvent>
 {
     /// <summary>
     /// If given, only recurrence overrides with a recurrence id before this date (in UTC)

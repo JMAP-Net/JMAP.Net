@@ -88,6 +88,6 @@ public abstract class SetResponse<TObject>
 /// <summary>
 /// Generic <c>*/set</c> response.
 /// </summary>
-public class SetResponse : SetResponse<object>
+public sealed class SetResponse : SetResponse<object>
 {
 }

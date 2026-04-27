@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using JMAP.Net.Common.Converters;
+using JMAP.Net.Capabilities.Core.Converters;
 
 namespace JMAP.Net.Capabilities.Core.Types;
 
@@ -26,7 +26,7 @@ namespace JMAP.Net.Capabilities.Core.Types;
 /// The server resolves the reference and replaces it with the actual value before processing.
 /// </remarks>
 [JsonConverter(typeof(ResultReferenceJsonConverter))]
-public class ResultReference
+public sealed class ResultReference
 {
     /// <summary>
     /// The method call id (see RFC 8620, Section 3.2) of a previous method call in the current request.

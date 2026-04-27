@@ -6,6 +6,6 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.Calendar;
 /// Response for Calendar/queryChanges method.
 /// Returns the changes to the Calendar query results.
 /// </summary>
-public class CalendarQueryChangesResponse : QueryChangesResponse
+public sealed class CalendarQueryChangesResponse : QueryChangesResponse
 {
 }

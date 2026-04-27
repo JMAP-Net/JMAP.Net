@@ -6,7 +6,7 @@ namespace JMAP.Net.Capabilities.Calendars.Types;
 /// Represents access rights for a calendar.
 /// As per JMAP Calendars RFC, Section 4.
 /// </summary>
-public class CalendarRights
+public sealed class CalendarRights
 {
     /// <summary>
     /// The user may read the free-busy information for this calendar.

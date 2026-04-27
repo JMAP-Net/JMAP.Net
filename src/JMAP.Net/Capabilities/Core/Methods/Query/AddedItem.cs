@@ -6,7 +6,7 @@ namespace JMAP.Net.Capabilities.Core.Methods.Query;
 /// <summary>
 /// Represents an item added to query results.
 /// </summary>
-public class AddedItem
+public sealed class AddedItem
 {
     /// <summary>
     /// The id of the added item.

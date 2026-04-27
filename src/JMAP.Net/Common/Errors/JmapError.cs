@@ -6,7 +6,7 @@ namespace JMAP.Net.Common.Errors;
 /// Represents a JMAP error at the method level.
 /// As per RFC 8620, Section 3.6.2.
 /// </summary>
-public class JmapError
+public sealed class JmapError
 {
     /// <summary>
     /// The error type identifier.

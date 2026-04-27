@@ -39,11 +39,13 @@ internal static class JmapEndpointHandlers
         HttpContext httpContext,
         IJmapSessionProvider sessionProvider,
         IJmapRequestDispatcher dispatcher,
+        IOptionsMonitor<JmapServerOptions> serverOptions,
         IOptionsMonitor<JmapAspNetCoreOptions> aspNetCoreOptions)
     {
         ArgumentNullException.ThrowIfNull(httpContext);
         ArgumentNullException.ThrowIfNull(sessionProvider);
         ArgumentNullException.ThrowIfNull(dispatcher);
+        ArgumentNullException.ThrowIfNull(serverOptions);
         ArgumentNullException.ThrowIfNull(aspNetCoreOptions);
 
         var transaction = CreateTransaction(httpContext);
@@ -58,9 +60,11 @@ internal static class JmapEndpointHandlers
 
         JmapRequest? request;
 
+        JsonDocument document;
+
         try
         {
-            request = await JsonSerializer.DeserializeAsync<JmapRequest>(
+            document = await JsonDocument.ParseAsync(
                 httpContext.Request.Body,
                 cancellationToken: httpContext.RequestAborted);
         }
@@ -79,6 +83,25 @@ internal static class JmapEndpointHandlers
             return;
         }
 
+        try
+        {
+            request = document.Deserialize<JmapRequest>();
+        }
+        catch (JsonException)
+        {
+            await WriteProblemDetailsAsync(
+                httpContext,
+                new ProblemDetails
+                {
+                    Type = ProblemDetailsType.NotRequest,
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = "The JSON payload was valid but was not a valid JMAP request object."
+                },
+                aspNetCoreOptions.CurrentValue,
+                httpContext.RequestAborted);
+            return;
+        }
+
         if (request is null)
         {
             await WriteProblemDetailsAsync(
@@ -88,6 +111,27 @@ internal static class JmapEndpointHandlers
                     Type = ProblemDetailsType.NotRequest,
                     Status = StatusCodes.Status400BadRequest,
                     Detail = "The JSON payload was valid but did not contain a JMAP request object."
+                },
+                aspNetCoreOptions.CurrentValue,
+                httpContext.RequestAborted);
+            return;
+        }
+
+        if (!await ValidateRequestShapeAsync(httpContext, request, aspNetCoreOptions.CurrentValue, httpContext.RequestAborted))
+        {
+            return;
+        }
+
+        if (request.MethodCalls.Count > serverOptions.CurrentValue.MaxCallsInRequest)
+        {
+            await WriteProblemDetailsAsync(
+                httpContext,
+                new ProblemDetails
+                {
+                    Type = ProblemDetailsType.Limit,
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = "The request contains more method calls than this server is willing to process.",
+                    Limit = "maxCallsInRequest"
                 },
                 aspNetCoreOptions.CurrentValue,
                 httpContext.RequestAborted);
@@ -115,6 +159,37 @@ internal static class JmapEndpointHandlers
         var response = await dispatcher.DispatchAsync(transaction, request, httpContext.RequestAborted);
 
         await WriteJsonAsync(httpContext, response, aspNetCoreOptions.CurrentValue, httpContext.RequestAborted);
+    }
+
+    private static async Task<bool> ValidateRequestShapeAsync(
+        HttpContext httpContext,
+        JmapRequest request,
+        JmapAspNetCoreOptions options,
+        CancellationToken cancellationToken)
+    {
+        if (request.Using is null
+            || request.MethodCalls is null
+            || request.Using.Any(string.IsNullOrWhiteSpace)
+            || request.MethodCalls.Any(invocation =>
+                invocation is null
+                || string.IsNullOrWhiteSpace(invocation.Name)
+                || invocation.Arguments is null
+                || string.IsNullOrWhiteSpace(invocation.MethodCallId)))
+        {
+            await WriteProblemDetailsAsync(
+                httpContext,
+                new ProblemDetails
+                {
+                    Type = ProblemDetailsType.NotRequest,
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = "The JSON payload was valid but was not a valid JMAP request object."
+                },
+                options,
+                cancellationToken);
+            return false;
+        }
+
+        return true;
     }
 
     private static JmapTransaction CreateTransaction(HttpContext httpContext)

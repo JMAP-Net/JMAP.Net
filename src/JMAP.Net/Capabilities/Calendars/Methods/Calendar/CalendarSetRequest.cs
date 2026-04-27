@@ -9,7 +9,7 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.Calendar;
 /// Request for Calendar/set method.
 /// As per JMAP Calendars RFC, Section 4.3.
 /// </summary>
-public class CalendarSetRequest : SetRequest<JMAP.Net.Capabilities.Calendars.Types.Calendar, PatchObject>
+public sealed class CalendarSetRequest : SetRequest<JMAP.Net.Capabilities.Calendars.Types.Calendar, PatchObject>
 {
     /// <summary>
     /// If false, any attempt to destroy a Calendar that still has CalendarEvents will be rejected.

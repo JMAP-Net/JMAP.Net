@@ -7,7 +7,7 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.CalendarEvent;
 /// Request for CalendarEvent/query method.
 /// As per JMAP Calendars RFC, Section 5.11.
 /// </summary>
-public class CalendarEventQueryRequest : QueryRequest<CalendarEventFilterCondition>
+public sealed class CalendarEventQueryRequest : QueryRequest<CalendarEventFilterCondition>
 {
     /// <summary>
     /// If true, the server will expand recurring events.

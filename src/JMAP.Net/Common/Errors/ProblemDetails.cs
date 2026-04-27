@@ -6,7 +6,7 @@ namespace JMAP.Net.Common.Errors;
 /// Represents a JSON problem details object as per RFC 7807, used for request-level errors.
 /// As per RFC 8620, Section 3.6.1.
 /// </summary>
-public class ProblemDetails
+public sealed class ProblemDetails
 {
     /// <summary>
     /// A URI reference that identifies the problem type.

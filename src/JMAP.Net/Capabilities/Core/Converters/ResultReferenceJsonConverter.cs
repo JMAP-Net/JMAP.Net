@@ -2,13 +2,13 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using JMAP.Net.Capabilities.Core.Types;
 
-namespace JMAP.Net.Common.Converters;
+namespace JMAP.Net.Capabilities.Core.Converters;
 
 /// <summary>
 /// JSON converter for ResultReference that serializes as a string in the format: #methodCallId/path
 /// As per RFC 8620, Section 3.7.
 /// </summary>
-public class ResultReferenceJsonConverter : JsonConverter<ResultReference>
+public sealed class ResultReferenceJsonConverter : JsonConverter<ResultReference>
 {
     /// <summary>
     /// Reads a <see cref="ResultReference" /> from its object representation.

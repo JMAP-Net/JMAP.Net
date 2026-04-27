@@ -6,6 +6,6 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.Calendar;
 /// Response for Calendar/query method.
 /// Returns the list of Calendar ids that match the query criteria.
 /// </summary>
-public class CalendarQueryResponse : QueryResponse
+public sealed class CalendarQueryResponse : QueryResponse
 {
 }

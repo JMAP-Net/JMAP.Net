@@ -25,7 +25,7 @@ internal static class CalendarFixtures
             IsSubscribed = true,
             IsVisible = true,
             IsDefault = false,
-            IncludeInAvailability = "all",
+            IncludeInAvailability = CalendarAvailabilityInclusion.All,
             TimeZone = "Europe/Berlin",
             ShareWith = new Dictionary<JmapId, CalendarRights>
             {
@@ -91,6 +91,7 @@ internal static class CalendarFixtures
             MayInviteSelf = true,
             MayInviteOthers = true,
             HideAttendees = true,
+            UseDefaultAlerts = true,
             Participants = new Dictionary<string, Participant>
             {
                 ["alice"] = new JmapParticipant
@@ -102,7 +103,9 @@ internal static class CalendarFixtures
                     {
                         [ParticipantRole.Owner] = true
                     },
-                    ParticipationStatus = ParticipationStatus.Accepted
+                    ParticipationStatus = ParticipationStatus.Accepted,
+                    ScheduleSequence = 7,
+                    ScheduleUpdated = new DateTimeOffset(2026, 4, 1, 7, 45, 0, TimeSpan.Zero)
                 }
             }
         };

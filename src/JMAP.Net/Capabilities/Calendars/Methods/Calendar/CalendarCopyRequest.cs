@@ -7,6 +7,6 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.Calendar;
 /// Copies calendar records from one account to another.
 /// As per JMAP Calendars RFC, Section 4.4.
 /// </summary>
-public class CalendarCopyRequest : CopyRequest<JMAP.Net.Capabilities.Calendars.Types.Calendar>
+public sealed class CalendarCopyRequest : CopyRequest<JMAP.Net.Capabilities.Calendars.Types.Calendar>
 {
 }

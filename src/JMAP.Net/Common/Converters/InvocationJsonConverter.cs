@@ -7,7 +7,7 @@ namespace JMAP.Net.Common.Converters;
 /// <summary>
 /// JSON converter for Invocation that serializes as a JSON array [name, arguments, methodCallId].
 /// </summary>
-public class InvocationJsonConverter : JsonConverter<Invocation>
+public sealed class InvocationJsonConverter : JsonConverter<Invocation>
 {
     /// <summary>
     /// Reads an <see cref="Invocation" /> from its compact JSON array representation.

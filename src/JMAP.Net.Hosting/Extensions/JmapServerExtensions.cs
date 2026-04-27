@@ -24,6 +24,7 @@ public static class JmapServerExtensions
         builder.Services.AddOptions();
 
         builder.Services.TryAddScoped<IJmapRequestDispatcher, JmapRequestDispatcher>();
+        builder.Services.TryAddSingleton<IJmapResultReferenceResolver, JmapResultReferenceResolver>();
         builder.Services.TryAddScoped<IJmapSessionProvider, MissingJmapSessionProvider>();
 
         builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<

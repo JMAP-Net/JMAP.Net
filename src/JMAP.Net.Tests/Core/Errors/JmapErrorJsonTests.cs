@@ -39,4 +39,14 @@ public class JmapErrorJsonTests
         await Assert.That(error.ExtensionData!["arguments"]).IsTypeOf<JsonElement>();
         await Assert.That(((JsonElement)error.ExtensionData["arguments"]!).GetArrayLength()).IsEqualTo(1);
     }
+
+    [Test]
+    public async Task CalendarErrorTypes_ShouldExposeRfcStringValues()
+    {
+        using var _ = Assert.Multiple();
+        await Assert.That(SetErrorType.CalendarHasEvent).IsEqualTo("calendarHasEvent");
+        await Assert.That(JmapErrorType.NoSupportedScheduleMethods).IsEqualTo("noSupportedScheduleMethods");
+        await Assert.That(JmapErrorType.ExpandDurationTooLarge).IsEqualTo("expandDurationTooLarge");
+        await Assert.That(JmapErrorType.CannotCalculateOccurrences).IsEqualTo("cannotCalculateOccurrences");
+    }
 }

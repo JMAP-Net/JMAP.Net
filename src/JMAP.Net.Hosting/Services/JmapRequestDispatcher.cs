@@ -9,10 +9,11 @@ namespace JMAP.Net.Hosting.Services;
 /// <summary>
 /// Implements the default in-memory JMAP request dispatcher.
 /// </summary>
-public sealed class JmapRequestDispatcher : IJmapRequestDispatcher
+internal sealed class JmapRequestDispatcher : IJmapRequestDispatcher
 {
     private readonly IReadOnlyDictionary<string, IJmapMethodHandler> _handlers;
     private readonly IOptionsMonitor<JmapServerOptions> _options;
+    private readonly IJmapResultReferenceResolver _resultReferenceResolver;
     private readonly IJmapSessionProvider _sessionProvider;
 
     /// <summary>
@@ -21,15 +22,18 @@ public sealed class JmapRequestDispatcher : IJmapRequestDispatcher
     /// <param name="handlers">The registered method handlers.</param>
     /// <param name="sessionProvider">The session provider.</param>
     /// <param name="options">The server options.</param>
+    /// <param name="resultReferenceResolver">The result reference resolver.</param>
     public JmapRequestDispatcher(
         IEnumerable<IJmapMethodHandler> handlers,
         IJmapSessionProvider sessionProvider,
-        IOptionsMonitor<JmapServerOptions> options)
+        IOptionsMonitor<JmapServerOptions> options,
+        IJmapResultReferenceResolver resultReferenceResolver)
     {
         ArgumentNullException.ThrowIfNull(handlers);
 
         _sessionProvider = sessionProvider ?? throw new ArgumentNullException(nameof(sessionProvider));
         _options = options ?? throw new ArgumentNullException(nameof(options));
+        _resultReferenceResolver = resultReferenceResolver ?? throw new ArgumentNullException(nameof(resultReferenceResolver));
         _handlers = handlers
             .GroupBy(handler => handler.MethodName, StringComparer.Ordinal)
             .ToDictionary(group => group.Key, group => group.Last(), StringComparer.Ordinal);
@@ -69,7 +73,12 @@ public sealed class JmapRequestDispatcher : IJmapRequestDispatcher
 
         for (var index = 0; index < request.MethodCalls.Count; index++)
         {
-            responses[index] = await DispatchInvocationAsync(transaction, request, request.MethodCalls[index], cancellationToken);
+            responses[index] = await DispatchInvocationAsync(
+                transaction,
+                request,
+                request.MethodCalls[index],
+                responses,
+                cancellationToken);
         }
 
         return responses;
@@ -97,6 +106,7 @@ public sealed class JmapRequestDispatcher : IJmapRequestDispatcher
                         transaction,
                         request,
                         item.Invocation,
+                        responses,
                         cancellationToken);
                 }
                 finally
@@ -121,7 +131,7 @@ public sealed class JmapRequestDispatcher : IJmapRequestDispatcher
             var invocation = request.MethodCalls[index];
             var item = CreateScheduledInvocation(transaction, request, invocation, index);
 
-            if (!CanRunInParallel(item) || HasResultReference(invocation))
+            if (!CanRunInParallel(item) || _resultReferenceResolver.ContainsResultReference(invocation))
             {
                 AddCurrentBatch();
                 batches.Add([item]);
@@ -194,6 +204,7 @@ public sealed class JmapRequestDispatcher : IJmapRequestDispatcher
         JmapTransaction transaction,
         JmapRequest request,
         Invocation invocation,
+        IReadOnlyList<Invocation?> previousResponses,
         CancellationToken cancellationToken)
     {
         if (!_handlers.TryGetValue(invocation.Name, out var handler))
@@ -206,12 +217,20 @@ public sealed class JmapRequestDispatcher : IJmapRequestDispatcher
 
         try
         {
+            if (!_resultReferenceResolver.TryResolve(invocation, previousResponses, out var resolvedInvocation))
+            {
+                return CreateErrorInvocation(
+                    invocation.MethodCallId,
+                    JmapErrorType.InvalidResultReference,
+                    "A result reference could not be resolved.");
+            }
+
             var result = await handler.HandleAsync(
                 new JmapMethodContext
                 {
                     Transaction = transaction,
                     Request = request,
-                    Invocation = invocation
+                    Invocation = resolvedInvocation
                 },
                 cancellationToken);
 
@@ -246,35 +265,6 @@ public sealed class JmapRequestDispatcher : IJmapRequestDispatcher
             string.Equals(existing.ConcurrencyKey, invocation.ConcurrencyKey, StringComparison.Ordinal)
             && (existing.ExecutionMode == JmapMethodExecutionMode.ExclusiveWrite
                 || invocation.ExecutionMode == JmapMethodExecutionMode.ExclusiveWrite));
-    }
-
-    private static bool HasResultReference(Invocation invocation)
-        => invocation.Arguments.Values.Any(ContainsResultReference);
-
-    private static bool ContainsResultReference(object? value)
-    {
-        if (value is null)
-        {
-            return false;
-        }
-
-        if (value is IReadOnlyDictionary<string, object?> dictionary)
-        {
-            return dictionary.Keys.Any(key => key.StartsWith('#'))
-                || dictionary.Values.Any(ContainsResultReference);
-        }
-
-        if (value is string)
-        {
-            return false;
-        }
-
-        if (value is IEnumerable<object?> enumerable)
-        {
-            return enumerable.Any(ContainsResultReference);
-        }
-
-        return false;
     }
 
     private static Invocation CreateErrorInvocation(string methodCallId, string type, string description)

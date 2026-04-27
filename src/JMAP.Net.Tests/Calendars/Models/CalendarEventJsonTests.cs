@@ -38,7 +38,11 @@ public class CalendarEventJsonTests
         await Assert.That(calendarEvent.CalendarIds!.ContainsKey(new JmapId("cal1"))).IsTrue();
         await Assert.That(calendarEvent.IsDraft).IsTrue();
         await Assert.That(calendarEvent.MayInviteSelf).IsTrue();
+        await Assert.That(calendarEvent.UseDefaultAlerts).IsTrue();
         await Assert.That(calendarEvent.UtcStart!.Value.ToString()).IsEqualTo("2026-04-01T08:00:00Z");
         await Assert.That(calendarEvent.Participants!["alice"].Name).IsEqualTo("Alice");
+        await Assert.That(calendarEvent.Participants!["alice"].ScheduleSequence).IsEqualTo(7);
+        await Assert.That(calendarEvent.Participants!["alice"].ScheduleUpdated).IsEqualTo(
+            new DateTimeOffset(2026, 4, 1, 7, 45, 0, TimeSpan.Zero));
     }
 }

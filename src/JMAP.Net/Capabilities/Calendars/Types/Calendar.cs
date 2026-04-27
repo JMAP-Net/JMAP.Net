@@ -8,7 +8,7 @@ namespace JMAP.Net.Capabilities.Calendars.Types;
 /// Represents a JMAP Calendar - a named collection of events.
 /// As per JMAP Calendars RFC, Section 4.
 /// </summary>
-public class Calendar
+public sealed class Calendar
 {
     /// <summary>
     /// The id of the calendar.
@@ -74,7 +74,7 @@ public class Calendar
     /// Values: "all", "attending", "none".
     /// </summary>
     [JsonPropertyName("includeInAvailability")]
-    public required string IncludeInAvailability { get; init; }
+    public required CalendarAvailabilityInclusion IncludeInAvailability { get; init; }
 
     /// <summary>
     /// A map of alert ids to Alert objects to apply for events where showWithoutTime is false

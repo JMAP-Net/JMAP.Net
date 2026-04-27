@@ -9,7 +9,7 @@ namespace JMAP.Net.Common.Protocol;
 /// As per RFC 8620, Section 3.2.
 /// </summary>
 [JsonConverter(typeof(InvocationJsonConverter))]
-public class Invocation
+public sealed class Invocation
 {
     /// <summary>
     /// The name of the method to call or the response name.

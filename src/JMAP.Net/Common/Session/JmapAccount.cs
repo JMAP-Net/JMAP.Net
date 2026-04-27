@@ -6,7 +6,7 @@ namespace JMAP.Net.Common.Session;
 /// Represents a JMAP account - a collection of data.
 /// As per RFC 8620, Section 1.6.2.
 /// </summary>
-public class JmapAccount
+public sealed class JmapAccount
 {
     /// <summary>
     /// A user-friendly string to show when presenting content from this account.

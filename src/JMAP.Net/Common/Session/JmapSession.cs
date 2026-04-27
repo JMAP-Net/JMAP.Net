@@ -8,7 +8,7 @@ namespace JMAP.Net.Common.Session;
 /// the server can provide to the client.
 /// As per RFC 8620, Section 2.
 /// </summary>
-public class JmapSession
+public sealed class JmapSession
 {
     /// <summary>
     /// An object specifying the capabilities of this server.

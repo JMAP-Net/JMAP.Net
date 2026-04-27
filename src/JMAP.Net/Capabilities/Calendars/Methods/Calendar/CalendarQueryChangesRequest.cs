@@ -6,6 +6,6 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.Calendar;
 /// Request for Calendar/queryChanges method.
 /// Gets the changes to the query results since a previous state.
 /// </summary>
-public class CalendarQueryChangesRequest : QueryChangesRequest<CalendarFilterCondition>
+public sealed class CalendarQueryChangesRequest : QueryChangesRequest<CalendarFilterCondition>
 {
 }

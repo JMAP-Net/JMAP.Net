@@ -6,6 +6,6 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.Calendar;
 /// Request for Calendar/get method.
 /// As per JMAP Calendars RFC, Section 4.1.
 /// </summary>
-public class CalendarGetRequest : GetRequest<JMAP.Net.Capabilities.Calendars.Types.Calendar>
+public sealed class CalendarGetRequest : GetRequest<JMAP.Net.Capabilities.Calendars.Types.Calendar>
 {
 }

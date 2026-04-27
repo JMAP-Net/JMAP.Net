@@ -6,6 +6,6 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.CalendarEvent;
 /// Response for CalendarEvent/changes method.
 /// As per JMAP Calendars RFC, Section 5.8.
 /// </summary>
-public class CalendarEventChangesResponse : ChangesResponse
+public sealed class CalendarEventChangesResponse : ChangesResponse
 {
 }

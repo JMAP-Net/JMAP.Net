@@ -6,6 +6,6 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.CalendarEvent;
 /// Response for CalendarEvent/set method.
 /// As per JMAP Calendars RFC, Section 5.9.
 /// </summary>
-public class CalendarEventSetResponse : SetResponse<JMAP.Net.Capabilities.Calendars.Types.CalendarEvent>
+public sealed class CalendarEventSetResponse : SetResponse<JMAP.Net.Capabilities.Calendars.Types.CalendarEvent>
 {
 }

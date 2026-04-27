@@ -6,7 +6,7 @@ namespace JMAP.Net.Common.Errors;
 /// Represents a SetError for failed create/update/destroy operations in /set methods.
 /// As per RFC 8620, Section 5.3.
 /// </summary>
-public class SetError
+public sealed class SetError
 {
     /// <summary>
     /// The type of error.

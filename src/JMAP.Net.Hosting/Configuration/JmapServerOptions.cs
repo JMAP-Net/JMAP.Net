@@ -24,4 +24,9 @@ public sealed class JmapServerOptions
     /// Gets or sets the maximum number of method calls that may run at the same time.
     /// </summary>
     public int MaxParallelMethodCalls { get; set; } = Environment.ProcessorCount;
+
+    /// <summary>
+    /// Gets or sets the maximum number of method calls accepted in a single JMAP request.
+    /// </summary>
+    public int MaxCallsInRequest { get; set; } = 16;
 }

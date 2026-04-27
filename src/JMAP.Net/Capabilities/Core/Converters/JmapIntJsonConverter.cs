@@ -2,12 +2,12 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using JMAP.Net.Capabilities.Core.Types;
 
-namespace JMAP.Net.Common.Converters;
+namespace JMAP.Net.Capabilities.Core.Converters;
 
 /// <summary>
 /// JSON converter for JmapInt type.
 /// </summary>
-public class JmapIntJsonConverter : JsonConverter<JmapInt>
+public sealed class JmapIntJsonConverter : JsonConverter<JmapInt>
 {
     /// <summary>
     /// Reads a <see cref="JmapInt" /> from a JSON number value.

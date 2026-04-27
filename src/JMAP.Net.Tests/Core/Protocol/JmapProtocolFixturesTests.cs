@@ -1,4 +1,5 @@
 using System.Text.Json;
+using JMAP.Net.Capabilities.Calendars;
 using JMAP.Net.Capabilities.Core.Types;
 using JMAP.Net.Common.Protocol;
 using JMAP.Net.Common.Session;
@@ -123,5 +124,24 @@ public class JmapProtocolFixturesTests
         using var _ = Assert.Multiple();
         await Assert.That(session!.Accounts.ContainsKey(new JmapId("account1"))).IsTrue();
         await Assert.That(session.PrimaryAccounts["urn:ietf:params:jmap:core"]).IsEqualTo(new JmapId("account1"));
+    }
+
+    [Test]
+    public async Task SessionWithCalendarCapabilities_WhenDeserializedFromFixture_ShouldReadCapabilityPlacement()
+    {
+        var json = await FixtureLoader.LoadTextAsync(Path.Combine("Protocol", "jmap-session-with-calendar-capabilities.json"));
+
+        var session = JsonSerializer.Deserialize<JmapSession>(json);
+
+        await Assert.That(session).IsNotNull();
+        using var _ = Assert.Multiple();
+        await Assert.That(session!.Capabilities.ContainsKey(CalendarCapability.CapabilityUri)).IsTrue();
+        await Assert.That(session.Capabilities.ContainsKey(CalendarParseCapability.CapabilityUri)).IsTrue();
+        await Assert.That(session.Capabilities.ContainsKey(PrincipalAvailabilityCapability.CapabilityUri)).IsTrue();
+        await Assert.That(session.Accounts[new JmapId("account1")].AccountCapabilities.ContainsKey(CalendarAccountCapability.CapabilityUri)).IsTrue();
+        await Assert.That(session.Accounts[new JmapId("account1")].AccountCapabilities.ContainsKey(CalendarParseCapability.CapabilityUri)).IsTrue();
+        await Assert.That(session.Accounts[new JmapId("account1")].AccountCapabilities.ContainsKey(PrincipalAvailabilityAccountCapability.CapabilityUri)).IsTrue();
+        await Assert.That(session.PrimaryAccounts.ContainsKey("urn:ietf:params:jmap:core")).IsFalse();
+        await Assert.That(session.PrimaryAccounts[CalendarCapability.CapabilityUri]).IsEqualTo(new JmapId("account1"));
     }
 }

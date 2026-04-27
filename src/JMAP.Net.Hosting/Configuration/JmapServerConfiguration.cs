@@ -5,7 +5,7 @@ namespace JMAP.Net.Hosting.Configuration;
 /// <summary>
 /// Validates and normalizes the configured JMAP server options.
 /// </summary>
-public sealed class JmapServerConfiguration : IPostConfigureOptions<JmapServerOptions>
+internal sealed class JmapServerConfiguration : IPostConfigureOptions<JmapServerOptions>
 {
     /// <inheritdoc />
     public void PostConfigure(string? name, JmapServerOptions options)
@@ -23,6 +23,11 @@ public sealed class JmapServerConfiguration : IPostConfigureOptions<JmapServerOp
         if (options.MaxParallelMethodCalls < 1)
         {
             throw new InvalidOperationException($"{nameof(options.MaxParallelMethodCalls)} must be greater than zero.");
+        }
+
+        if (options.MaxCallsInRequest < 1)
+        {
+            throw new InvalidOperationException($"{nameof(options.MaxCallsInRequest)} must be greater than zero.");
         }
     }
 

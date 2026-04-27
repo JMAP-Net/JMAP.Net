@@ -7,7 +7,7 @@ namespace JMAP.Net.Common.Protocol;
 /// Represents a JMAP API response.
 /// As per RFC 8620, Section 3.4.
 /// </summary>
-public class JmapResponse
+public sealed class JmapResponse
 {
     /// <summary>
     /// An array of responses in the same format as methodCalls on the Request object.

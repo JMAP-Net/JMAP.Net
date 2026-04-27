@@ -6,6 +6,6 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.Calendar;
 /// Response for Calendar/copy method.
 /// As per JMAP Calendars RFC, Section 4.4.
 /// </summary>
-public class CalendarCopyResponse : CopyResponse<JMAP.Net.Capabilities.Calendars.Types.Calendar>
+public sealed class CalendarCopyResponse : CopyResponse<JMAP.Net.Capabilities.Calendars.Types.Calendar>
 {
 }

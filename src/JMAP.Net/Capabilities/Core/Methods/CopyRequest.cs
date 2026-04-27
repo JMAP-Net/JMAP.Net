@@ -70,6 +70,6 @@ public abstract class CopyRequest<TObject>
 /// <summary>
 /// Generic <c>*/copy</c> request.
 /// </summary>
-public class CopyRequest : CopyRequest<object>
+public sealed class CopyRequest : CopyRequest<object>
 {
 }

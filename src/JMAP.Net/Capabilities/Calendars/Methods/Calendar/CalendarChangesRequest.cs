@@ -6,6 +6,6 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.Calendar;
 /// Request for Calendar/changes method.
 /// As per JMAP Calendars RFC, Section 4.2.
 /// </summary>
-public class CalendarChangesRequest : ChangesRequest
+public sealed class CalendarChangesRequest : ChangesRequest
 {
 }

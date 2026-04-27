@@ -11,7 +11,7 @@ namespace JMAP.Net.Capabilities.Core.Methods;
 /// Binary data may be copied between two different accounts using this method
 /// rather than having to download and reupload on the client.
 /// </remarks>
-public class BlobCopyRequest
+public sealed class BlobCopyRequest
 {
     /// <summary>
     /// The id of the account to copy blobs from.

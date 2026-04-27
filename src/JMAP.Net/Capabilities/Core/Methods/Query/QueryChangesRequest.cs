@@ -68,6 +68,6 @@ public abstract class QueryChangesRequest<TFilter>
 /// <summary>
 /// Generic <c>*/queryChanges</c> request that accepts any filter payload.
 /// </summary>
-public class QueryChangesRequest : QueryChangesRequest<object>
+public sealed class QueryChangesRequest : QueryChangesRequest<object>
 {
 }

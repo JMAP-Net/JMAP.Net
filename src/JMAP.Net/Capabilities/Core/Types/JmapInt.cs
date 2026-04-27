@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using JMAP.Net.Common.Converters;
+using JMAP.Net.Capabilities.Core.Converters;
 
 namespace JMAP.Net.Capabilities.Core.Types;
 

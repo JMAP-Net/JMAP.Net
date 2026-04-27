@@ -8,7 +8,7 @@ namespace JMAP.Net.Capabilities.Calendars.Types;
 /// within that account in an event's participants.
 /// As per JMAP Calendars RFC, Section 3.
 /// </summary>
-public class ParticipantIdentity
+public sealed class ParticipantIdentity
 {
     /// <summary>
     /// The id of the ParticipantIdentity.

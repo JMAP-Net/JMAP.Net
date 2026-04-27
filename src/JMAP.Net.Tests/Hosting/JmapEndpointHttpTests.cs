@@ -64,6 +64,43 @@ public class JmapEndpointHttpTests
     }
 
     [Test]
+    public async Task ApiEndpoint_WhenBodyIsNotJmapRequest_ShouldReturnNotRequestProblem()
+    {
+        await using var factory = new JmapWebApplicationFactory();
+        using var client = factory.CreateClient();
+
+        var response = await client.PostAsync(
+            "/jmap",
+            new StringContent("""{"using":["urn:ietf:params:jmap:core"]}""", Encoding.UTF8, "application/json"));
+        var problem = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+
+        await Assert.That(response.StatusCode).IsEqualTo(HttpStatusCode.BadRequest);
+        await Assert.That(problem).IsNotNull();
+        await Assert.That(problem!.Type).IsEqualTo(ProblemDetailsType.NotRequest);
+    }
+
+    [Test]
+    public async Task ApiEndpoint_WhenMaxCallsInRequestIsExceeded_ShouldReturnLimitProblem()
+    {
+        await using var factory = new JmapWebApplicationFactory(
+            configureServer: server => server.SetMaxCallsInRequest(1));
+        using var client = factory.CreateClient();
+
+        var response = await client.PostAsJsonAsync(
+            "/jmap",
+            JmapRequestBuilder.CoreRequest(
+                JmapRequestBuilder.CoreEcho("c1"),
+                JmapRequestBuilder.CoreEcho("c2")));
+        var problem = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+
+        await Assert.That(response.StatusCode).IsEqualTo(HttpStatusCode.BadRequest);
+        await Assert.That(problem).IsNotNull();
+        using var _ = Assert.Multiple();
+        await Assert.That(problem!.Type).IsEqualTo(ProblemDetailsType.Limit);
+        await Assert.That(problem.Limit).IsEqualTo("maxCallsInRequest");
+    }
+
+    [Test]
     public async Task ApiEndpoint_WhenCapabilityIsUnsupported_ShouldReturnUnknownCapabilityProblem()
     {
         await using var factory = new JmapWebApplicationFactory();

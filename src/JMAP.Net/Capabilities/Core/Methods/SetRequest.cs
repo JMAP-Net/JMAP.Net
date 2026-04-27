@@ -56,6 +56,6 @@ public abstract class SetRequest<TObject, TPatch>
 /// <summary>
 /// Generic <c>*/set</c> request with dictionary-based patch objects.
 /// </summary>
-public class SetRequest : SetRequest<object, PatchObject>
+public sealed class SetRequest : SetRequest<object, PatchObject>
 {
 }

@@ -9,7 +9,7 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.ParticipantIdentity;
 /// Request for ParticipantIdentity/set method.
 /// As per JMAP Calendars RFC, Section 3.3.
 /// </summary>
-public class ParticipantIdentitySetRequest : SetRequest<JMAP.Net.Capabilities.Calendars.Types.ParticipantIdentity, PatchObject>
+public sealed class ParticipantIdentitySetRequest : SetRequest<JMAP.Net.Capabilities.Calendars.Types.ParticipantIdentity, PatchObject>
 {
     /// <summary>
     /// If set, and all creates, updates, and destroys succeed, the server attempts to make

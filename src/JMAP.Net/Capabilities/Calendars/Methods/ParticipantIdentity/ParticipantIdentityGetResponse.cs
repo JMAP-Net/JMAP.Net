@@ -6,6 +6,6 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.ParticipantIdentity;
 /// Response for ParticipantIdentity/get method.
 /// As per JMAP Calendars RFC, Section 3.1.
 /// </summary>
-public class ParticipantIdentityGetResponse : GetResponse<JMAP.Net.Capabilities.Calendars.Types.ParticipantIdentity>
+public sealed class ParticipantIdentityGetResponse : GetResponse<JMAP.Net.Capabilities.Calendars.Types.ParticipantIdentity>
 {
 }

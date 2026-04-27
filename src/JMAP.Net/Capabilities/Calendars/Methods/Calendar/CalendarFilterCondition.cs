@@ -7,7 +7,7 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.Calendar;
 /// A filter condition for Calendar/query.
 /// All conditions in the filter must match for the Calendar to be included in results.
 /// </summary>
-public class CalendarFilterCondition
+public sealed class CalendarFilterCondition
 {
     /// <summary>
     /// The Calendar name contains this string (case-insensitive substring match).

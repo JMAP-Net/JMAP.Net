@@ -121,4 +121,20 @@ public static class JmapErrorType
     /// The source account does not support the requested copy method.
     /// </summary>
     public const string FromAccountNotSupportedByMethod = "fromAccountNotSupportedByMethod";
+
+    // JMAP Calendars method errors
+    /// <summary>
+    /// The account has no participant identities with a scheduling method the server supports.
+    /// </summary>
+    public const string NoSupportedScheduleMethods = "noSupportedScheduleMethods";
+
+    /// <summary>
+    /// The requested recurrence expansion duration is larger than the server allows.
+    /// </summary>
+    public const string ExpandDurationTooLarge = "expandDurationTooLarge";
+
+    /// <summary>
+    /// The server cannot calculate occurrences for the supplied recurrence data.
+    /// </summary>
+    public const string CannotCalculateOccurrences = "cannotCalculateOccurrences";
 }

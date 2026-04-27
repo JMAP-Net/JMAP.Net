@@ -79,6 +79,6 @@ public abstract class QueryRequest<TFilter>
 /// <summary>
 /// Generic <c>*/query</c> request that accepts any filter payload.
 /// </summary>
-public class QueryRequest : QueryRequest<object>
+public sealed class QueryRequest : QueryRequest<object>
 {
 }

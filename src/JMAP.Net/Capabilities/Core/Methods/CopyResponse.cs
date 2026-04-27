@@ -61,6 +61,6 @@ public abstract class CopyResponse<TObject>
 /// <summary>
 /// Generic <c>*/copy</c> response.
 /// </summary>
-public class CopyResponse : CopyResponse<object>
+public sealed class CopyResponse : CopyResponse<object>
 {
 }

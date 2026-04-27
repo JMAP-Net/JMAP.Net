@@ -6,6 +6,6 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.Calendar;
 /// Request for Calendar/query method.
 /// Searches for calendars matching the given filter criteria.
 /// </summary>
-public class CalendarQueryRequest : QueryRequest<CalendarFilterCondition>
+public sealed class CalendarQueryRequest : QueryRequest<CalendarFilterCondition>
 {
 }

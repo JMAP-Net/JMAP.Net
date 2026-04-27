@@ -134,4 +134,46 @@ public class CalendarEventResponseJsonTests
         await Assert.That(response.Created![new JmapId("copy-event-1")].Id).IsEqualTo(new JmapId("event1"));
         await Assert.That(response.NotCreated![new JmapId("copy-event-2")].Type).IsEqualTo(SetErrorType.AlreadyExists);
     }
+
+    [Test]
+    public async Task CalendarEventParseResponse_WhenSerialized_ShouldMatchFixture()
+    {
+        var response = new CalendarEventParseResponse
+        {
+            AccountId = new JmapId("account1"),
+            Parsed = new Dictionary<JmapId, List<CalendarEvent>>
+            {
+                [new JmapId("blob1")] =
+                [
+                    CalendarFixtures.CreateCalendarEvent()
+                ]
+            },
+            NotFound =
+            [
+                new JmapId("blob2")
+            ],
+            NotParsable =
+            [
+                new JmapId("blob3")
+            ]
+        };
+
+        var json = JsonSerializer.Serialize(response);
+        await JsonAssert.AreEqualAsync(json, Path.Combine("Calendars", "calendar-event-parse-response.json"));
+    }
+
+    [Test]
+    public async Task CalendarEventParseResponse_WhenDeserializedFromFixture_ShouldReadParsedAndErrorBuckets()
+    {
+        var json = await FixtureLoader.LoadTextAsync(Path.Combine("Calendars", "calendar-event-parse-response.json"));
+
+        var response = JsonSerializer.Deserialize<CalendarEventParseResponse>(json);
+
+        await Assert.That(response).IsNotNull();
+        using var _ = Assert.Multiple();
+        await Assert.That(response!.AccountId).IsEqualTo(new JmapId("account1"));
+        await Assert.That(response.Parsed![new JmapId("blob1")][0].Id).IsEqualTo(new JmapId("event1"));
+        await Assert.That(response.NotFound![0]).IsEqualTo(new JmapId("blob2"));
+        await Assert.That(response.NotParsable![0]).IsEqualTo(new JmapId("blob3"));
+    }
 }

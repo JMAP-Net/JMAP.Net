@@ -1,7 +1,7 @@
 {
   "accountId": "account1",
   "filter": {
-    "type": "Updated",
+    "type": "updated",
     "calendarEventIds": [
       "event1"
     ]

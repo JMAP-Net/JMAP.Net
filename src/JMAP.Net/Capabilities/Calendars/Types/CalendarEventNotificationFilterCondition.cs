@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using JMAP.Net.Capabilities.Calendars.Converters;
 using JMAP.Net.Capabilities.Core.Types;
 
 namespace JMAP.Net.Capabilities.Calendars.Types;
@@ -7,7 +8,7 @@ namespace JMAP.Net.Capabilities.Calendars.Types;
 /// Filter condition for CalendarEventNotification/query.
 /// As per RFC 8984, Section 6.4.
 /// </summary>
-public class CalendarEventNotificationFilterCondition
+public sealed class CalendarEventNotificationFilterCondition
 {
     /// <summary>
     /// The creation date must be on or after this date to match the condition.
@@ -28,7 +29,7 @@ public class CalendarEventNotificationFilterCondition
     /// Must be one of: "created", "updated", "destroyed".
     /// </summary>
     [JsonPropertyName("type")]
-    [JsonConverter(typeof(JsonStringEnumConverter))]
+    [JsonConverter(typeof(CalendarEventNotificationTypeJsonConverter))]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public CalendarEventNotificationType? Type { get; init; }
 

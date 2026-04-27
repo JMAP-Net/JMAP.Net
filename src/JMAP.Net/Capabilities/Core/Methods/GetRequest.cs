@@ -38,6 +38,6 @@ public abstract class GetRequest<TObject>
 /// <summary>
 /// Generic <c>*/get</c> request.
 /// </summary>
-public class GetRequest : GetRequest<object>
+public sealed class GetRequest : GetRequest<object>
 {
 }

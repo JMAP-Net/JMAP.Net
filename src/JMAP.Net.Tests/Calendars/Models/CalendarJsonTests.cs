@@ -35,7 +35,16 @@ public class CalendarJsonTests
         await Assert.That(calendar).IsNotNull();
         using var _ = Assert.Multiple();
         await Assert.That(calendar!.Id).IsEqualTo(new JmapId("cal1"));
+        await Assert.That(calendar.IncludeInAvailability).IsEqualTo(CalendarAvailabilityInclusion.All);
         await Assert.That(calendar.ShareWith!.ContainsKey(new JmapId("principal1"))).IsTrue();
         await Assert.That(calendar.MyRights.MayWriteAll).IsTrue();
+    }
+
+    [Test]
+    public async Task CalendarAvailabilityInclusion_WhenSerialized_ShouldUseRfcStringValues()
+    {
+        await Assert.That(JsonSerializer.Serialize(CalendarAvailabilityInclusion.All)).IsEqualTo("\"all\"");
+        await Assert.That(JsonSerializer.Serialize(CalendarAvailabilityInclusion.Attending)).IsEqualTo("\"attending\"");
+        await Assert.That(JsonSerializer.Serialize(CalendarAvailabilityInclusion.None)).IsEqualTo("\"none\"");
     }
 }

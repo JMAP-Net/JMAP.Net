@@ -7,6 +7,6 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.CalendarEventNotification;
 /// Request for CalendarEventNotification/changes method.
 /// As per RFC 8984, Section 6.2.
 /// </summary>
-public class CalendarEventNotificationChangesRequest : ChangesRequest
+public sealed class CalendarEventNotificationChangesRequest : ChangesRequest
 {
 }

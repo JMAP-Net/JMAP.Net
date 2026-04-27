@@ -8,7 +8,7 @@ namespace JMAP.Net.Capabilities.Calendars.Types;
 /// and scheduling functionality is required.
 /// As per RFC 8984, Section 5.1.4.
 /// </summary>
-public class JmapParticipant : JSCalendar.Net.Participant
+public sealed class JmapParticipant : JSCalendar.Net.Participant
 {
     /// <summary>
     /// A URI as defined by RFC 3986 or any other IANA-registered form for a URI.

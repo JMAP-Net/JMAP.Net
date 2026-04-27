@@ -8,7 +8,7 @@
     "scheduleId": "mailto:alice@example.com"
   },
   "comment": "Updated the agenda",
-  "type": "Updated",
+  "type": "updated",
   "calendarEventId": "event1",
   "isDraft": false,
   "event": {
@@ -60,9 +60,9 @@
         "expectReply": false,
         "scheduleAgent": "server",
         "scheduleForceSend": false,
-        "scheduleSequence": 0,
+        "scheduleSequence": 7,
         "scheduleStatus": null,
-        "scheduleUpdated": null,
+        "scheduleUpdated": "2026-04-01T07:45:00+00:00",
         "sentBy": null,
         "invitedBy": null,
         "delegatedTo": null,
@@ -75,7 +75,7 @@
       }
     },
     "requestStatus": null,
-    "useDefaultAlerts": false,
+    "useDefaultAlerts": true,
     "alerts": null,
     "localizations": null,
     "timeZone": "Europe/Berlin",

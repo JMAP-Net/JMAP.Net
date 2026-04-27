@@ -6,7 +6,7 @@ namespace JMAP.Net.Capabilities.Core.Methods.Query;
 /// Specifies how to compare properties when sorting query results.
 /// As per RFC 8620, Section 5.5.
 /// </summary>
-public class Comparator
+public sealed class Comparator
 {
     /// <summary>
     /// The name of the property on the objects being queried to compare.

@@ -41,6 +41,6 @@ public abstract class GetResponse<TObject>
 /// <summary>
 /// Generic <c>*/get</c> response.
 /// </summary>
-public class GetResponse : GetResponse<object>
+public sealed class GetResponse : GetResponse<object>
 {
 }

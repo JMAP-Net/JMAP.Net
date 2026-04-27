@@ -6,6 +6,6 @@ namespace JMAP.Net.Capabilities.Calendars.Methods.ParticipantIdentity;
 /// Request for ParticipantIdentity/changes method.
 /// As per JMAP Calendars RFC, Section 3.2.
 /// </summary>
-public class ParticipantIdentityChangesRequest : ChangesRequest
+public sealed class ParticipantIdentityChangesRequest : ChangesRequest
 {
 }

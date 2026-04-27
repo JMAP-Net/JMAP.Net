@@ -54,4 +54,9 @@ public static class SetErrorType
     /// A conflicting record already exists.
     /// </summary>
     public const string AlreadyExists = "alreadyExists";
+
+    /// <summary>
+    /// The Calendar has at least one CalendarEvent assigned to it.
+    /// </summary>
+    public const string CalendarHasEvent = "calendarHasEvent";
 }
