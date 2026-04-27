@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="JMAP.Net/JMAP.Net.csproj" />
+  <Project Path="JMAP.Net.Hosting/JMAP.Net.Hosting.csproj" />
   <Project Path="JMAP.Net.Tests/JMAP.Net.Tests.csproj" />
 </Solution>

@@ -9,11 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.*" />
     <PackageReference Include="TUnit" Version="1.*" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\JMAP.Net\JMAP.Net.csproj" />
+    <ProjectReference Include="..\JMAP.Net.Hosting\JMAP.Net.Hosting.csproj" />
   </ItemGroup>
 
   <ItemGroup>
