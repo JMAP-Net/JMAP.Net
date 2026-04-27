@@ -8,9 +8,9 @@
         <!-- NuGet Package Metadata -->
         <PackageId>JMAP.Net</PackageId>
         <Title>JMAP.Net</Title>
-        <Description>A modern .NET library implementing the JSON Meta Application Protocol (RFC 8620/8621).</Description>
+        <Description>A modern .NET library implementing the JSON Meta Application Protocol core and calendar contracts.</Description>
         <Authors>JMAP.Net</Authors>
-        <PackageTags>jmap;rfc8620;rfc8621</PackageTags>
+        <PackageTags>jmap;rfc8620;calendar;calendars</PackageTags>
         <PackageProjectUrl>https://github.com/JMAP-Net/JMAP.Net</PackageProjectUrl>
         <RepositoryUrl>https://github.com/JMAP-Net/JMAP.Net</RepositoryUrl>
         <RepositoryType>git</RepositoryType>

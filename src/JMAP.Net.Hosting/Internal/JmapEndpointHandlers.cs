@@ -39,12 +39,14 @@ internal static class JmapEndpointHandlers
         HttpContext httpContext,
         IJmapSessionProvider sessionProvider,
         IJmapRequestDispatcher dispatcher,
+        IJmapRequestConcurrencyLimiter concurrencyLimiter,
         IOptionsMonitor<JmapServerOptions> serverOptions,
         IOptionsMonitor<JmapAspNetCoreOptions> aspNetCoreOptions)
     {
         ArgumentNullException.ThrowIfNull(httpContext);
         ArgumentNullException.ThrowIfNull(sessionProvider);
         ArgumentNullException.ThrowIfNull(dispatcher);
+        ArgumentNullException.ThrowIfNull(concurrencyLimiter);
         ArgumentNullException.ThrowIfNull(serverOptions);
         ArgumentNullException.ThrowIfNull(aspNetCoreOptions);
 
@@ -53,6 +55,37 @@ internal static class JmapEndpointHandlers
 
         if (!await EnsureHttpsRequirementAsync(httpContext, aspNetCoreOptions.CurrentValue, httpContext.RequestAborted))
         {
+            return;
+        }
+
+        var serverConfiguration = serverOptions.CurrentValue;
+
+        if (!await ValidateApiRequestEnvelopeAsync(
+                httpContext,
+                serverConfiguration,
+                aspNetCoreOptions.CurrentValue,
+                httpContext.RequestAborted))
+        {
+            return;
+        }
+
+        using var concurrencyLease = await concurrencyLimiter.TryAcquireAsync(
+            serverConfiguration.MaxConcurrentRequests,
+            httpContext.RequestAborted);
+
+        if (concurrencyLease is null)
+        {
+            await WriteProblemDetailsAsync(
+                httpContext,
+                new ProblemDetails
+                {
+                    Type = ProblemDetailsType.Limit,
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = "The server is already processing as many concurrent API requests as it allows.",
+                    Limit = "maxConcurrentRequests"
+                },
+                aspNetCoreOptions.CurrentValue,
+                httpContext.RequestAborted);
             return;
         }
 
@@ -122,7 +155,7 @@ internal static class JmapEndpointHandlers
             return;
         }
 
-        if (request.MethodCalls.Count > serverOptions.CurrentValue.MaxCallsInRequest)
+        if (request.MethodCalls.Count > serverConfiguration.MaxCallsInRequest)
         {
             await WriteProblemDetailsAsync(
                 httpContext,
@@ -159,6 +192,57 @@ internal static class JmapEndpointHandlers
         var response = await dispatcher.DispatchAsync(transaction, request, httpContext.RequestAborted);
 
         await WriteJsonAsync(httpContext, response, aspNetCoreOptions.CurrentValue, httpContext.RequestAborted);
+    }
+
+    private static async Task<bool> ValidateApiRequestEnvelopeAsync(
+        HttpContext httpContext,
+        JmapServerOptions serverOptions,
+        JmapAspNetCoreOptions aspNetCoreOptions,
+        CancellationToken cancellationToken)
+    {
+        if (!IsJsonContentType(httpContext.Request.ContentType))
+        {
+            await WriteProblemDetailsAsync(
+                httpContext,
+                new ProblemDetails
+                {
+                    Type = ProblemDetailsType.NotRequest,
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = "The request Content-Type must be application/json."
+                },
+                aspNetCoreOptions,
+                cancellationToken);
+            return false;
+        }
+
+        if (httpContext.Request.ContentLength > serverOptions.MaxSizeRequest)
+        {
+            await WriteProblemDetailsAsync(
+                httpContext,
+                new ProblemDetails
+                {
+                    Type = ProblemDetailsType.Limit,
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = "The request body is larger than this server is willing to process.",
+                    Limit = "maxSizeRequest"
+                },
+                aspNetCoreOptions,
+                cancellationToken);
+            return false;
+        }
+
+        return true;
+    }
+
+    private static bool IsJsonContentType(string? contentType)
+    {
+        if (string.IsNullOrWhiteSpace(contentType))
+        {
+            return false;
+        }
+
+        var mediaType = contentType.Split(';', 2)[0].Trim();
+        return string.Equals(mediaType, "application/json", StringComparison.OrdinalIgnoreCase);
     }
 
     private static async Task<bool> ValidateRequestShapeAsync(

@@ -29,6 +29,16 @@ internal sealed class JmapServerConfiguration : IPostConfigureOptions<JmapServer
         {
             throw new InvalidOperationException($"{nameof(options.MaxCallsInRequest)} must be greater than zero.");
         }
+
+        if (options.MaxConcurrentRequests < 1)
+        {
+            throw new InvalidOperationException($"{nameof(options.MaxConcurrentRequests)} must be greater than zero.");
+        }
+
+        if (options.MaxSizeRequest < 1)
+        {
+            throw new InvalidOperationException($"{nameof(options.MaxSizeRequest)} must be greater than zero.");
+        }
     }
 
     private static string NormalizePath(string path, string parameterName)

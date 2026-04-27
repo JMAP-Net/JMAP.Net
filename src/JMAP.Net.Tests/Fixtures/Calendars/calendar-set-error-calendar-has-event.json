@@ -1,0 +1,4 @@
+{
+  "type": "calendarHasEvent",
+  "description": "Calendar cannot be destroyed while it still contains events"
+}

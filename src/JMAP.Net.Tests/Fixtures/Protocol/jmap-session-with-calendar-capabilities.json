@@ -12,6 +12,7 @@
         "i;unicode-casemap"
       ]
     },
+    "urn:ietf:params:jmap:principals": {},
     "urn:ietf:params:jmap:calendars": {},
     "urn:ietf:params:jmap:calendars:parse": {},
     "urn:ietf:params:jmap:principals:availability": {}
@@ -28,6 +29,13 @@
           "maxDateTime": "2100-01-01T00:00:00Z",
           "maxExpandedQueryDuration": "P1Y",
           "mayCreateCalendar": true
+        },
+        "urn:ietf:params:jmap:principals": {
+          "currentUserPrincipalId": "principal1"
+        },
+        "urn:ietf:params:jmap:principals:owner": {
+          "accountIdForPrincipal": "account1",
+          "principalId": "principal1"
         },
         "urn:ietf:params:jmap:calendars:parse": {},
         "urn:ietf:params:jmap:principals:availability": {

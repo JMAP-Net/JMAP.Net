@@ -118,6 +118,40 @@ public sealed class JmapServerBuilder
         return Configure(options => options.MaxCallsInRequest = maxCalls);
     }
 
+    /// <summary>
+    /// Sets the maximum number of concurrent API requests accepted by the server.
+    /// </summary>
+    /// <param name="maxRequests">The maximum number of concurrent API requests.</param>
+    /// <returns>The current builder instance.</returns>
+    public JmapServerBuilder SetMaxConcurrentRequests(int maxRequests)
+    {
+        if (maxRequests < 1)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(maxRequests),
+                "The maximum number of concurrent requests must be greater than zero.");
+        }
+
+        return Configure(options => options.MaxConcurrentRequests = maxRequests);
+    }
+
+    /// <summary>
+    /// Sets the maximum request body size accepted by the API endpoint.
+    /// </summary>
+    /// <param name="maxSize">The maximum request body size in octets.</param>
+    /// <returns>The current builder instance.</returns>
+    public JmapServerBuilder SetMaxSizeRequest(long maxSize)
+    {
+        if (maxSize < 1)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(maxSize),
+                "The maximum request size must be greater than zero.");
+        }
+
+        return Configure(options => options.MaxSizeRequest = maxSize);
+    }
+
     /// <inheritdoc />
     [EditorBrowsable(EditorBrowsableState.Never)]
     public override bool Equals(object? obj) => base.Equals(obj);

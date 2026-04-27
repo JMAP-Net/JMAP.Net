@@ -29,4 +29,14 @@ public sealed class JmapServerOptions
     /// Gets or sets the maximum number of method calls accepted in a single JMAP request.
     /// </summary>
     public int MaxCallsInRequest { get; set; } = 16;
+
+    /// <summary>
+    /// Gets or sets the maximum number of concurrent API requests accepted by the server.
+    /// </summary>
+    public int MaxConcurrentRequests { get; set; } = 4;
+
+    /// <summary>
+    /// Gets or sets the maximum request body size, in octets, accepted by the API endpoint.
+    /// </summary>
+    public long MaxSizeRequest { get; set; } = 10_000_000;
 }

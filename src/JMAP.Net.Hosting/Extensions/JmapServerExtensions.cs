@@ -24,6 +24,7 @@ public static class JmapServerExtensions
         builder.Services.AddOptions();
 
         builder.Services.TryAddScoped<IJmapRequestDispatcher, JmapRequestDispatcher>();
+        builder.Services.TryAddSingleton<IJmapRequestConcurrencyLimiter, JmapRequestConcurrencyLimiter>();
         builder.Services.TryAddSingleton<IJmapResultReferenceResolver, JmapResultReferenceResolver>();
         builder.Services.TryAddScoped<IJmapSessionProvider, MissingJmapSessionProvider>();
 

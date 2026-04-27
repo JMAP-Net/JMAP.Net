@@ -5,7 +5,9 @@ using System.Text;
 using JMAP.Net.Common.Errors;
 using JMAP.Net.Common.Protocol;
 using JMAP.Net.Common.Session;
+using JMAP.Net.Tests.Hosting.Handlers;
 using JMAP.Net.Tests.Hosting.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace JMAP.Net.Tests.Hosting;
 
@@ -64,6 +66,22 @@ public class JmapEndpointHttpTests
     }
 
     [Test]
+    public async Task ApiEndpoint_WhenContentTypeIsNotJson_ShouldReturnNotRequestProblem()
+    {
+        await using var factory = new JmapWebApplicationFactory();
+        using var client = factory.CreateClient();
+
+        var response = await client.PostAsync(
+            "/jmap",
+            new StringContent("{}", Encoding.UTF8, "text/plain"));
+        var problem = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+
+        await Assert.That(response.StatusCode).IsEqualTo(HttpStatusCode.BadRequest);
+        await Assert.That(problem).IsNotNull();
+        await Assert.That(problem!.Type).IsEqualTo(ProblemDetailsType.NotRequest);
+    }
+
+    [Test]
     public async Task ApiEndpoint_WhenBodyIsNotJmapRequest_ShouldReturnNotRequestProblem()
     {
         await using var factory = new JmapWebApplicationFactory();
@@ -98,6 +116,58 @@ public class JmapEndpointHttpTests
         using var _ = Assert.Multiple();
         await Assert.That(problem!.Type).IsEqualTo(ProblemDetailsType.Limit);
         await Assert.That(problem.Limit).IsEqualTo("maxCallsInRequest");
+    }
+
+    [Test]
+    public async Task ApiEndpoint_WhenMaxSizeRequestIsExceeded_ShouldReturnLimitProblem()
+    {
+        await using var factory = new JmapWebApplicationFactory(
+            configureServer: server => server.SetMaxSizeRequest(8));
+        using var client = factory.CreateClient();
+
+        var response = await client.PostAsync(
+            "/jmap",
+            new StringContent("""{"using":[],"methodCalls":[]}""", Encoding.UTF8, "application/json"));
+        var problem = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+
+        await Assert.That(response.StatusCode).IsEqualTo(HttpStatusCode.BadRequest);
+        await Assert.That(problem).IsNotNull();
+        using var _ = Assert.Multiple();
+        await Assert.That(problem!.Type).IsEqualTo(ProblemDetailsType.Limit);
+        await Assert.That(problem.Limit).IsEqualTo("maxSizeRequest");
+    }
+
+    [Test]
+    public async Task ApiEndpoint_WhenMaxConcurrentRequestsIsExceeded_ShouldReturnLimitProblem()
+    {
+        var probe = new DispatchConcurrencyProbe();
+        await using var factory = new JmapWebApplicationFactory(
+            configureServer: server =>
+            {
+                server.SetMaxConcurrentRequests(1);
+                server.AddMethodHandler<DelayedReadHandler>();
+            },
+            configureServices: services => services.AddSingleton(probe));
+        using var client = factory.CreateClient();
+
+        using var firstRequest = client.PostAsJsonAsync(
+            "/jmap",
+            JmapRequestBuilder.CoreRequest(JmapRequestBuilder.DelayedRead("c1", 250)));
+
+        await Task.Delay(50);
+
+        var response = await client.PostAsJsonAsync(
+            "/jmap",
+            JmapRequestBuilder.CoreRequest(JmapRequestBuilder.CoreEcho("c2")));
+        var problem = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+
+        await firstRequest;
+
+        await Assert.That(response.StatusCode).IsEqualTo(HttpStatusCode.BadRequest);
+        await Assert.That(problem).IsNotNull();
+        using var _ = Assert.Multiple();
+        await Assert.That(problem!.Type).IsEqualTo(ProblemDetailsType.Limit);
+        await Assert.That(problem.Limit).IsEqualTo("maxConcurrentRequests");
     }
 
     [Test]

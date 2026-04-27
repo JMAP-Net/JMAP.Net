@@ -1,0 +1,10 @@
+{
+  "accountId": "principal-account",
+  "queryState": "principal-query-state-1",
+  "canCalculateChanges": true,
+  "position": 0,
+  "ids": [
+    "principal1"
+  ],
+  "total": 1
+}

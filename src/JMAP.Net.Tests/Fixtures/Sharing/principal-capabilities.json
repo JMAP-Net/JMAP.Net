@@ -1,0 +1,10 @@
+{
+  "principals": {},
+  "principalsAccount": {
+    "currentUserPrincipalId": "principal1"
+  },
+  "principalsOwner": {
+    "accountIdForPrincipal": "principal-account",
+    "principalId": "principal1"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "accountId": "principal-account",
+  "ids": [
+    "principal1"
+  ],
+  "properties": [
+    "id",
+    "type",
+    "name",
+    "capabilities"
+  ]
+}

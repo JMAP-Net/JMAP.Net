@@ -1,0 +1,16 @@
+[
+  {
+    "type": "noSupportedScheduleMethods",
+    "description": "The account has no participant identities with a supported scheduling method"
+  },
+  {
+    "type": "expandDurationTooLarge",
+    "description": "The requested recurrence expansion duration is too large",
+    "maxDuration": "P1Y"
+  },
+  {
+    "type": "cannotCalculateOccurrences",
+    "description": "Occurrences cannot be calculated for the supplied recurrence data",
+    "eventId": "event1"
+  }
+]

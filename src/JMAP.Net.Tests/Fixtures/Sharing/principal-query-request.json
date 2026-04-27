@@ -1,0 +1,9 @@
+{
+  "accountId": "principal-account",
+  "filter": {
+    "name": "Jane",
+    "type": "individual",
+    "calendarAddress": "mailto:jane@example.com"
+  },
+  "calculateTotal": true
+}

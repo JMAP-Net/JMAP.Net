@@ -1,5 +1,6 @@
 using JMAP.Net.Hosting;
 using JMAP.Net.Hosting.Services;
+using System.Text.Json;
 
 namespace JMAP.Net.Tests.Hosting.Handlers;
 
@@ -28,8 +29,12 @@ internal sealed class DelayedReadHandler(DispatchConcurrencyProbe probe)
     private static int GetDelayMilliseconds(JmapMethodContext context)
     {
         return context.Invocation.Arguments.TryGetValue("delayMilliseconds", out var delayMilliseconds)
-            && delayMilliseconds is int value
-                ? value
-                : 1;
+            ? delayMilliseconds switch
+            {
+                int value => value,
+                JsonElement { ValueKind: JsonValueKind.Number } value when value.TryGetInt32(out var result) => result,
+                _ => 1
+            }
+            : 1;
     }
 }

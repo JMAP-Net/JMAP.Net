@@ -9,7 +9,8 @@ namespace JMAP.Net.Tests.Hosting.Infrastructure;
 
 internal sealed class JmapWebApplicationFactory(
     Action<JmapServerBuilder>? configureServer = null,
-    Action<JmapAspNetCoreBuilder>? configureAspNetCore = null)
+    Action<JmapAspNetCoreBuilder>? configureAspNetCore = null,
+    Action<IServiceCollection>? configureServices = null)
     : WebApplicationFactory<JmapEndpointHttpTests>
 {
     protected override IWebHostBuilder? CreateWebHostBuilder()
@@ -19,6 +20,8 @@ internal sealed class JmapWebApplicationFactory(
 #pragma warning restore ASPDEPR004
             .ConfigureServices(services =>
             {
+                configureServices?.Invoke(services);
+
                 services
                     .AddJmap()
                     .AddServer(server =>

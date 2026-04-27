@@ -16,7 +16,7 @@ It is not a full client or server runtime, and it does not currently claim compl
 - **Native .NET 10** - Built for modern .NET with nullable reference types enabled
 - **JSON Serialization** - Custom `System.Text.Json` converters for JMAP-specific value types and envelopes
 - **Core Method Contracts** - Models for /get, /set, /changes, /query, /queryChanges, and /copy
-- **JMAP Calendars Support** - Calendar, CalendarEvent, ParticipantIdentity, and CalendarEventNotification contracts on top of `JSCalendar.Net`
+- **JMAP Calendars Support** - Calendar, CalendarEvent, ParticipantIdentity, CalendarEventNotification, parse, and availability contracts on top of `JSCalendar.Net`
 - **Fixture-Tested** - Contract coverage with TUnit for core and calendar serialization/deserialization
 
 ## Installation
@@ -38,6 +38,8 @@ Install-Package JMAP.Net
 ```csharp
 using JMAP.Net.Capabilities.Core;
 using JMAP.Net.Capabilities.Core.Types;
+using JMAP.Net.Capabilities.Calendars;
+using JMAP.Net.Capabilities.Sharing;
 using JMAP.Net.Common.Session;
 using System.Text.Json;
 
@@ -55,7 +57,11 @@ var session = new JmapSession
             MaxObjectsInGet = new JmapUnsignedInt(500),
             MaxObjectsInSet = new JmapUnsignedInt(500),
             CollationAlgorithms = new List<string> { "i;ascii-casemap" }
-        }
+        },
+        [CalendarCapability.CapabilityUri] = new CalendarCapability(),
+        [CalendarParseCapability.CapabilityUri] = new CalendarParseCapability(),
+        [PrincipalCapability.CapabilityUri] = new PrincipalCapability(),
+        [PrincipalAvailabilityCapability.CapabilityUri] = new PrincipalAvailabilityCapability()
     },
     Accounts = new Dictionary<JmapId, JmapAccount>
     {
@@ -64,10 +70,39 @@ var session = new JmapSession
             Name = "user@example.com",
             IsPersonal = true,
             IsReadOnly = false,
-            AccountCapabilities = new Dictionary<string, object>()
+            AccountCapabilities = new Dictionary<string, object>
+            {
+                [CalendarAccountCapability.CapabilityUri] = new CalendarAccountCapability
+                {
+                    MaxCalendarsPerEvent = new JmapUnsignedInt(3),
+                    MinDateTime = "1900-01-01T00:00:00Z",
+                    MaxDateTime = "2100-01-01T00:00:00Z",
+                    MaxExpandedQueryDuration = "P1Y",
+                    MayCreateCalendar = true
+                },
+                [PrincipalAccountCapability.CapabilityUri] = new PrincipalAccountCapability
+                {
+                    CurrentUserPrincipalId = new JmapId("principal1")
+                },
+                [PrincipalOwnerCapability.CapabilityUri] = new PrincipalOwnerCapability
+                {
+                    AccountIdForPrincipal = new JmapId("account1"),
+                    PrincipalId = new JmapId("principal1")
+                },
+                [CalendarParseCapability.CapabilityUri] = new CalendarParseCapability(),
+                [PrincipalAvailabilityAccountCapability.CapabilityUri] = new PrincipalAvailabilityAccountCapability
+                {
+                    MaxAvailabilityDuration = "P90D"
+                }
+            }
         }
     },
-    PrimaryAccounts = new Dictionary<string, JmapId>(),
+    PrimaryAccounts = new Dictionary<string, JmapId>
+    {
+        [CalendarCapability.CapabilityUri] = new JmapId("account1"),
+        [CalendarParseCapability.CapabilityUri] = new JmapId("account1"),
+        [PrincipalAvailabilityCapability.CapabilityUri] = new JmapId("account1")
+    },
     Username = "user@example.com",
     ApiUrl = "https://jmap.example.com/api/",
     DownloadUrl = "https://jmap.example.com/download/{accountId}/{blobId}/{name}?type={type}",
@@ -299,15 +334,31 @@ JMAP.Net follows a modular architecture with clear separation between the core p
 - **JMAP.Net.Common.Protocol** - Request/Response/Invocation structures
 - **JMAP.Net.Capabilities.Core.Methods** - Standard JMAP method contracts (/get, /set, /changes, /query, /queryChanges, /copy)
 - **JMAP.Net.Common.Errors** - Error types and problem details
-- **JMAP.Net.Common.Converters** - JSON converters for custom types
+- **JMAP.Net.Common.Converters** - JSON converters for shared protocol structures
+- **JMAP.Net.Capabilities.Core.Converters** - JSON converters for Core-specific value types
 
 ### Extensions
-- **JMAP.Net.Capabilities.Calendars** - JMAP Calendars implementation (RFC 8984, integrates with JSCalendar.Net)
+- **JMAP.Net.Capabilities.Sharing** - JMAP Sharing principal contracts, including Principal capabilities and Principal standard methods
+- **JMAP.Net.Capabilities.Calendars** - JMAP Calendars contracts, including capability objects, CalendarEvent/parse, and Principal/getAvailability
+- **JMAP.Net.Capabilities.Calendars.Converters** - JSON converters for Calendar-specific enum/string contracts
 - Additional capabilities can be added incrementally on top of the shared Core contracts
 
 ## JMAP Calendar Extensions
 
-JMAP.Net includes typed support for JMAP Calendars (RFC 8984) with extensions to JSCalendar for JMAP-specific features.
+JMAP.Net includes typed support for JMAP Calendars with extensions to JSCalendar for JMAP-specific features.
+
+### Calendar Capabilities
+
+JMAP Calendar capabilities appear in different places in the Session object:
+
+- `CalendarCapability` is the empty session-level `urn:ietf:params:jmap:calendars` capability.
+- `CalendarAccountCapability` is the account-level value for `accountCapabilities`.
+- `CalendarPrincipalCapability` is the `urn:ietf:params:jmap:calendars` entry on a Principal's capabilities object.
+- `PrincipalCapability`, `PrincipalAccountCapability`, and `PrincipalOwnerCapability` model RFC 9670 Principal discovery and ownership.
+- `CalendarParseCapability` is the empty capability for `CalendarEvent/parse`.
+- `PrincipalAvailabilityCapability` and `PrincipalAvailabilityAccountCapability` describe `Principal/getAvailability` support.
+
+`urn:ietf:params:jmap:core` is a session capability and should not be added to `primaryAccounts`.
 
 ### Calendar Event Sharing Properties
 
@@ -458,7 +509,7 @@ The library currently covers these areas:
 - Session and capability models
 - Request/response contracts for the standard core methods
 - Structure-level support for binary data related models
-- JMAP Calendars models and method contracts (RFC 8984)
+- JMAP Calendars models and method contracts
 
 Areas intentionally not claimed as complete at this time:
 

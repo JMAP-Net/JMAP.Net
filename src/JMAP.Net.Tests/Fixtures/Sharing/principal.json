@@ -1,0 +1,26 @@
+{
+  "id": "principal1",
+  "type": "individual",
+  "name": "Jane Doe",
+  "description": "Calendar owner",
+  "email": "jane@example.com",
+  "timeZone": "Europe/Berlin",
+  "capabilities": {
+    "urn:ietf:params:jmap:calendars": {
+      "accountId": "account1",
+      "mayGetAvailability": true,
+      "mayShareWith": true,
+      "calendarAddress": "mailto:jane@example.com"
+    }
+  },
+  "accounts": {
+    "account1": {
+      "name": "Jane Calendar",
+      "isPersonal": true,
+      "isReadOnly": false,
+      "accountCapabilities": {
+        "urn:ietf:params:jmap:calendars": {}
+      }
+    }
+  }
+}
