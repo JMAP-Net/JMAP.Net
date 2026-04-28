@@ -1,0 +1,27 @@
+{
+  "accountId": "principal-account",
+  "state": "share-notification-state-1",
+  "list": [
+    {
+      "id": "share-notification1",
+      "created": "2026-04-27T08:30:00Z",
+      "changedBy": {
+        "name": "Jane Doe",
+        "email": "jane@example.com",
+        "principalId": "principal1"
+      },
+      "objectType": "Calendar",
+      "objectAccountId": "account1",
+      "objectId": "calendar1",
+      "oldRights": null,
+      "newRights": {
+        "mayReadItems": true,
+        "mayReadFreeBusy": true
+      },
+      "name": "Team Calendar"
+    }
+  ],
+  "notFound": [
+    "missing-share-notification"
+  ]
+}

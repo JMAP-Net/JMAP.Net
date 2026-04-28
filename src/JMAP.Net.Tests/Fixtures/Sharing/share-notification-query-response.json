@@ -1,0 +1,10 @@
+{
+  "accountId": "principal-account",
+  "queryState": "share-notification-query-state-1",
+  "canCalculateChanges": true,
+  "position": 0,
+  "ids": [
+    "share-notification1"
+  ],
+  "total": 1
+}

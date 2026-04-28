@@ -1,0 +1,6 @@
+{
+  "accountId": "principal-account",
+  "destroy": [
+    "share-notification1"
+  ]
+}

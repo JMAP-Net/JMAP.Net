@@ -1,0 +1,16 @@
+{
+  "accountId": "principal-account",
+  "filter": {
+    "after": "2026-04-01T00:00:00Z",
+    "before": "2026-05-01T00:00:00Z",
+    "objectType": "Calendar",
+    "objectAccountId": "account1"
+  },
+  "sort": [
+    {
+      "property": "created",
+      "isAscending": true
+    }
+  ],
+  "calculateTotal": true
+}

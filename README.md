@@ -338,7 +338,7 @@ JMAP.Net follows a modular architecture with clear separation between the core p
 - **JMAP.Net.Capabilities.Core.Converters** - JSON converters for Core-specific value types
 
 ### Extensions
-- **JMAP.Net.Capabilities.Sharing** - JMAP Sharing principal contracts, including Principal capabilities and Principal standard methods
+- **JMAP.Net.Capabilities.Sharing** - JMAP Sharing contracts, including Principal and ShareNotification capabilities and standard methods
 - **JMAP.Net.Capabilities.Calendars** - JMAP Calendars contracts, including capability objects, CalendarEvent/parse, and Principal/getAvailability
 - **JMAP.Net.Capabilities.Calendars.Converters** - JSON converters for Calendar-specific enum/string contracts
 - Additional capabilities can be added incrementally on top of the shared Core contracts
