@@ -8,5 +8,6 @@
   <ItemGroup>
     <ProjectReference Include="..\JMAP.Net\JMAP.Net.csproj" />
     <ProjectReference Include="..\JMAP.Net.Hosting\JMAP.Net.Hosting.csproj" />
+    <ProjectReference Include="..\JMAP.Net.Persistence\JMAP.Net.Persistence.csproj" />
   </ItemGroup>
 </Project>

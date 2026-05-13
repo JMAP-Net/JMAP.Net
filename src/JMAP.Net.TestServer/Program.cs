@@ -12,9 +12,7 @@ builder.Services
         server.AddSessionProvider<TestServerSessionProvider>();
         server.AddMethodHandler<CoreEchoHandler>();
         server.AddMethodHandler<PrincipalGetHandler>();
-        server.AddMethodHandler<CalendarGetHandler>();
-        server.AddMethodHandler<CalendarQueryHandler>();
-        server.AddMethodHandler<CalendarChangesHandler>();
+        server.AddCalendarEngine<InMemoryCalendarStore, TestServerUserContextProvider>();
         server.AddMethodHandler<CalendarEventGetHandler>();
         server.AddMethodHandler<CalendarEventQueryHandler>();
         server.AddMethodHandler<CalendarEventChangesHandler>();

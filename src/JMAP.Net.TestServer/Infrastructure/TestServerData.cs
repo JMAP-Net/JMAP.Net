@@ -1,4 +1,6 @@
 using System.Text.Json.Nodes;
+using JMAP.Net.Capabilities.Calendars.Types;
+using JMAP.Net.Capabilities.Core.Types;
 
 namespace JMAP.Net.TestServer.Infrastructure;
 
@@ -17,6 +19,31 @@ public sealed class TestServerData
 
     public string CalendarEventState { get; } = "calendar-event-state-1";
 
+    public Calendar WorkCalendar { get; } = new()
+    {
+        Id = new JmapId(CalendarId),
+        Name = "Work",
+        Description = "Deterministic calendar for CLI tests",
+        Color = "#2f80ed",
+        SortOrder = new JmapUnsignedInt(10),
+        IsSubscribed = true,
+        IsVisible = true,
+        IsDefault = true,
+        IncludeInAvailability = CalendarAvailabilityInclusion.All,
+        TimeZone = "Europe/Berlin",
+        MyRights = new CalendarRights
+        {
+            MayReadFreeBusy = true,
+            MayReadItems = true,
+            MayWriteAll = true,
+            MayWriteOwn = true,
+            MayUpdatePrivate = true,
+            MayRSVP = true,
+            MayAdmin = true,
+            MayDelete = true
+        }
+    };
+
     public JsonObject UserPrincipal { get; } = new()
     {
         ["id"] = UserPrincipalId,
@@ -31,7 +58,7 @@ public sealed class TestServerData
         }
     };
 
-    public JsonObject WorkCalendar { get; } = new()
+    public JsonObject WorkCalendarJson { get; } = new()
     {
         ["id"] = CalendarId,
         ["name"] = "Work",

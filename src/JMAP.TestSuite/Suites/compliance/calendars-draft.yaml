@@ -32,7 +32,6 @@ groups:
               methodCalls:
                 - - Calendar/get
                   - accountId: account1
-                    ids:
                   - c1
             expect:
               - statusCode: 200

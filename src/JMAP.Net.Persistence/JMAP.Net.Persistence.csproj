@@ -5,11 +5,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
-    <PackageId>JMAP.Net.Hosting</PackageId>
-    <Title>JMAP.Net.Hosting</Title>
-    <Description>ASP.NET Core hosting integration for JMAP.Net.</Description>
+    <PackageId>JMAP.Net.Persistence</PackageId>
+    <Title>JMAP.Net.Persistence</Title>
+    <Description>Persistence abstractions for JMAP.Net server implementations.</Description>
     <Authors>JMAP.Net</Authors>
-    <PackageTags>jmap;aspnetcore;hosting;server</PackageTags>
+    <PackageTags>jmap;persistence;storage;server</PackageTags>
     <PackageProjectUrl>https://github.com/JMAP-Net/JMAP.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/JMAP-Net/JMAP.Net</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -30,15 +30,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\JMAP.Net\JMAP.Net.csproj" />
-    <ProjectReference Include="..\JMAP.Net.Persistence\JMAP.Net.Persistence.csproj" />
     <PackageReference Include="Nerdbank.GitVersioning" Version="3.9.50">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>

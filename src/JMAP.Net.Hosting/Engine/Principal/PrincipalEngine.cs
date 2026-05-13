@@ -1,6 +1,7 @@
 using JMAP.Net.Capabilities.Core.Types;
 using JMAP.Net.Capabilities.Sharing.Methods.Principal;
 using JMAP.Net.Common.Errors;
+using JMAP.Net.Persistence.Sharing;
 
 namespace JMAP.Net.Hosting.Engine.Principal;
 

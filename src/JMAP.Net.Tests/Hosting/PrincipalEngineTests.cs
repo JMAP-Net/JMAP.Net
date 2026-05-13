@@ -7,6 +7,7 @@ using JMAP.Net.Hosting;
 using JMAP.Net.Hosting.Engine;
 using JMAP.Net.Hosting.Engine.Principal;
 using JMAP.Net.Hosting.Services;
+using JMAP.Net.Persistence.Sharing;
 using JMAP.Net.Tests.Hosting.Infrastructure;
 using JMAP.Net.Tests.Sharing;
 using Microsoft.Extensions.DependencyInjection;

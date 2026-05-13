@@ -1,24 +1,24 @@
-using JMAP.Net.Capabilities.Sharing.Methods.Principal;
+using JMAP.Net.Capabilities.Calendars.Methods.Calendar;
 using JMAP.Net.Hosting.Engine;
-using JMAP.Net.Hosting.Engine.Principal;
+using JMAP.Net.Hosting.Engine.Calendar;
 using JMAP.Net.Hosting.Services;
 
 namespace JMAP.Net.Hosting.Internal.Handlers;
 
-internal sealed class PrincipalGetHandler(
+internal sealed class CalendarChangesHandler(
     IJmapUserContextProvider userContextProvider,
-    IPrincipalEngine principalEngine)
+    ICalendarEngine calendarEngine)
     : IJmapMethodHandler
 {
-    public string MethodName => "Principal/get";
+    public string MethodName => "Calendar/changes";
 
     public async ValueTask<JmapMethodResult> HandleAsync(
         JmapMethodContext context,
         CancellationToken cancellationToken = default)
     {
-        var request = JmapMethodHandlerJson.DeserializeArguments<PrincipalGetRequest>(context.Invocation.Arguments);
+        var request = JmapMethodHandlerJson.DeserializeArguments<CalendarChangesRequest>(context.Invocation.Arguments);
         var executionContext = await userContextProvider.GetContextAsync(context.Transaction, cancellationToken);
-        var response = await principalEngine.GetAsync(executionContext, request, cancellationToken);
+        var response = await calendarEngine.ChangesAsync(executionContext, request, cancellationToken);
 
         return new JmapMethodResult
         {

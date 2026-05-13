@@ -1,9 +1,12 @@
 using System.ComponentModel;
 using JMAP.Net.Hosting.Configuration;
 using JMAP.Net.Hosting.Engine;
+using JMAP.Net.Hosting.Engine.Calendar;
 using JMAP.Net.Hosting.Engine.Principal;
 using JMAP.Net.Hosting.Internal.Handlers;
 using JMAP.Net.Hosting.Services;
+using JMAP.Net.Persistence.Calendars;
+using JMAP.Net.Persistence.Sharing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -81,6 +84,26 @@ public sealed class JmapServerBuilder
         Services.TryAddScoped<IJmapUserContextProvider, TUserContextProvider>();
         Services.TryAddScoped<IPrincipalEngine, PrincipalEngine>();
         Services.TryAddEnumerable(ServiceDescriptor.Scoped<IJmapMethodHandler, PrincipalGetHandler>());
+
+        return this;
+    }
+
+    /// <summary>
+    /// Registers the Calendar engine slice and Calendar/get, Calendar/query and Calendar/changes method handlers.
+    /// </summary>
+    /// <typeparam name="TCalendarStore">The Calendar store implementation type.</typeparam>
+    /// <typeparam name="TUserContextProvider">The user context provider implementation type.</typeparam>
+    /// <returns>The current builder instance.</returns>
+    public JmapServerBuilder AddCalendarEngine<TCalendarStore, TUserContextProvider>()
+        where TCalendarStore : class, ICalendarStore
+        where TUserContextProvider : class, IJmapUserContextProvider
+    {
+        Services.TryAddScoped<ICalendarStore, TCalendarStore>();
+        Services.TryAddScoped<IJmapUserContextProvider, TUserContextProvider>();
+        Services.TryAddScoped<ICalendarEngine, CalendarEngine>();
+        Services.TryAddEnumerable(ServiceDescriptor.Scoped<IJmapMethodHandler, CalendarGetHandler>());
+        Services.TryAddEnumerable(ServiceDescriptor.Scoped<IJmapMethodHandler, CalendarQueryHandler>());
+        Services.TryAddEnumerable(ServiceDescriptor.Scoped<IJmapMethodHandler, CalendarChangesHandler>());
 
         return this;
     }
