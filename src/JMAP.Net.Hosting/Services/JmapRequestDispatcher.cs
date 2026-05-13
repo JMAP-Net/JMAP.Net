@@ -241,6 +241,13 @@ internal sealed class JmapRequestDispatcher : IJmapRequestDispatcher
                 MethodCallId = invocation.MethodCallId
             };
         }
+        catch (JmapMethodException exception)
+        {
+            return CreateErrorInvocation(
+                invocation.MethodCallId,
+                exception.ErrorType,
+                exception.Message);
+        }
         catch (Exception exception) when (!IsFatal(exception))
         {
             return CreateErrorInvocation(

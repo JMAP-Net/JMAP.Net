@@ -1,0 +1,47 @@
+id: contacts-rfc9610
+name: RFC9610 Contacts compliance tests
+description: Placeholder suite for JMAP Contacts compliance. Scenarios are skipped until the contacts capability is implemented.
+category: compliance
+spec:
+  document: RFC9610
+requiresCapabilities:
+  - urn:ietf:params:jmap:contacts
+
+defaults:
+  using:
+    - urn:ietf:params:jmap:contacts
+
+groups:
+  - id: contact-card-get
+    name: ContactCard/get
+    skip:
+      reason: Contacts capability is not implemented by JMAP.Net yet.
+    spec:
+      document: RFC9610
+      section: "ContactCard/get"
+      requirement: "ContactCard/get follows the generic /get contract for JSContact card data."
+    scenarios:
+      - id: get-missing-contact-card-contract
+        name: ContactCard/get reports missing ids in notFound
+        spec:
+          document: RFC8620
+          section: "5.1"
+          requirement: "The notFound array contains ids for requested records that do not exist."
+        steps:
+          - id: contact-card-get-missing
+            type: jmap
+            request:
+              methodCalls:
+                - - ContactCard/get
+                  - accountId: account1
+                    ids:
+                      - contact-missing
+                  - c1
+            expect:
+              - statusCode: 200
+              - jsonPathArrayCount:
+                  path: $.methodResponses[0][1].list
+                  count: 0
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].notFound[0]
+                  value: contact-missing

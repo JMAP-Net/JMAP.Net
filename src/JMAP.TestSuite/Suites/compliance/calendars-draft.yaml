@@ -1,0 +1,462 @@
+id: calendars-compliance
+name: JMAP Calendars compliance tests
+description: Calendar checks derived from the JMAP Calendars specification.
+category: compliance
+spec:
+  document: draft-ietf-jmap-calendars-26
+requiresCapabilities:
+  - urn:ietf:params:jmap:calendars
+
+defaults:
+  using:
+    - urn:ietf:params:jmap:calendars
+
+groups:
+  - id: calendar-get
+    name: Calendar/get
+    spec:
+      document: draft-ietf-jmap-calendars-26
+      section: "Calendar/get"
+      requirement: "Calendar/get follows the generic /get contract and returns list and notFound arrays."
+    scenarios:
+      - id: get-all-calendars-contract
+        name: Calendar/get without ids returns available calendar objects
+        spec:
+          document: draft-ietf-jmap-calendars-26
+          section: "Calendar/get"
+          requirement: "A Calendar object includes id, name, subscription/default flags, availability inclusion and rights."
+        steps:
+          - id: calendar-get-all
+            type: jmap
+            request:
+              methodCalls:
+                - - Calendar/get
+                  - accountId: account1
+                    ids:
+                  - c1
+            expect:
+              - statusCode: 200
+              - methodResponse:
+                  name: Calendar/get
+                  callId: c1
+              - jsonPathExists: $.methodResponses[0][1].state
+              - jsonPathExists: $.methodResponses[0][1].list[0].id
+              - jsonPathExists: $.methodResponses[0][1].list[0].name
+              - jsonPathExists: $.methodResponses[0][1].list[0].isSubscribed
+              - jsonPathExists: $.methodResponses[0][1].list[0].isDefault
+              - jsonPathExists: $.methodResponses[0][1].list[0].includeInAvailability
+              - jsonPathExists: $.methodResponses[0][1].list[0].myRights.mayReadItems
+
+      - id: get-missing-calendar-contract
+        name: Calendar/get reports missing ids in notFound
+        spec:
+          document: RFC8620
+          section: "5.1"
+          requirement: "The notFound array contains ids for requested records that do not exist."
+        steps:
+          - id: calendar-get-missing
+            type: jmap
+            request:
+              methodCalls:
+                - - Calendar/get
+                  - accountId: account1
+                    ids:
+                      - calendar-missing
+                  - c1
+            expect:
+              - statusCode: 200
+              - jsonPathArrayCount:
+                  path: $.methodResponses[0][1].list
+                  count: 0
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].notFound[0]
+                  value: calendar-missing
+
+      - id: get-empty-calendar-ids-contract
+        name: Calendar/get with empty ids returns empty list and notFound
+        spec:
+          document: RFC8620
+          section: "5.1"
+          requirement: "If ids is an empty list, the response list and notFound arrays are empty."
+        steps:
+          - id: calendar-get-empty-ids
+            type: jmap
+            request:
+              methodCalls:
+                - - Calendar/get
+                  - accountId: account1
+                    ids: []
+                  - c1
+            expect:
+              - statusCode: 200
+              - jsonPathArrayCount:
+                  path: $.methodResponses[0][1].list
+                  count: 0
+              - jsonPathArrayCount:
+                  path: $.methodResponses[0][1].notFound
+                  count: 0
+
+      - id: get-mixed-calendar-ids-contract
+        name: Calendar/get with mixed known and unknown ids separates list and notFound
+        spec:
+          document: RFC8620
+          section: "5.1"
+          requirement: "The list contains found records and notFound contains ids for records that do not exist."
+        steps:
+          - id: calendar-get-mixed-ids
+            type: jmap
+            request:
+              methodCalls:
+                - - Calendar/get
+                  - accountId: account1
+                    ids:
+                      - calendar-work
+                      - calendar-missing
+                  - c1
+            expect:
+              - statusCode: 200
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].list[0].id
+                  value: calendar-work
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].notFound[0]
+                  value: calendar-missing
+
+      - id: get-calendar-properties-contract
+        name: Calendar/get properties filters returned object fields
+        spec:
+          document: RFC8620
+          section: "5.1"
+          requirement: "The properties argument limits the returned object properties to the requested names plus required server-set properties where applicable."
+        steps:
+          - id: calendar-get-properties
+            type: jmap
+            request:
+              methodCalls:
+                - - Calendar/get
+                  - accountId: account1
+                    ids:
+                      - calendar-work
+                    properties:
+                      - id
+                      - name
+                  - c1
+            expect:
+              - statusCode: 200
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].list[0].id
+                  value: calendar-work
+              - jsonPathExists: $.methodResponses[0][1].list[0].name
+              - jsonPathNotExists: $.methodResponses[0][1].list[0].color
+              - jsonPathNotExists: $.methodResponses[0][1].list[0].myRights
+
+  - id: calendar-query
+    name: Calendar/query
+    spec:
+      document: RFC8620
+      section: "5.5"
+      requirement: "Query responses include queryState, canCalculateChanges, position and ids."
+    scenarios:
+      - id: query-contract
+        name: Calendar/query returns generic query response shape
+        steps:
+          - id: calendar-query
+            type: jmap
+            request:
+              methodCalls:
+                - - Calendar/query
+                  - accountId: account1
+                  - c1
+            expect:
+              - statusCode: 200
+              - methodResponse:
+                  name: Calendar/query
+                  callId: c1
+              - jsonPathExists: $.methodResponses[0][1].queryState
+              - jsonPathExists: $.methodResponses[0][1].canCalculateChanges
+              - jsonPathExists: $.methodResponses[0][1].position
+              - jsonPathExists: $.methodResponses[0][1].ids
+
+  - id: calendar-changes
+    name: Calendar/changes
+    spec:
+      document: RFC8620
+      section: "5.2"
+      requirement: "Changes responses include oldState, newState, hasMoreChanges, created, updated and destroyed."
+    scenarios:
+      - id: calendar-changes-from-old-state
+        name: Calendar/changes from old state returns created ids
+        spec:
+          document: RFC8620
+          section: "5.2"
+          requirement: "The created array contains ids for records created since the old state."
+        steps:
+          - id: calendar-changes-created
+            type: jmap
+            request:
+              methodCalls:
+                - - Calendar/changes
+                  - accountId: account1
+                    sinceState: calendar-state-0
+                  - c1
+            expect:
+              - statusCode: 200
+              - methodResponse:
+                  name: Calendar/changes
+                  callId: c1
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].oldState
+                  value: calendar-state-0
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].newState
+                  value: calendar-state-1
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].hasMoreChanges
+                  value: false
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].created[0]
+                  value: calendar-work
+              - jsonPathArrayCount:
+                  path: $.methodResponses[0][1].updated
+                  count: 0
+              - jsonPathArrayCount:
+                  path: $.methodResponses[0][1].destroyed
+                  count: 0
+
+      - id: calendar-changes-from-current-state
+        name: Calendar/changes from current state returns no changes
+        spec:
+          document: RFC8620
+          section: "5.2"
+          requirement: "If there are no changes since the supplied state, created, updated and destroyed are empty."
+        steps:
+          - id: calendar-changes-empty
+            type: jmap
+            request:
+              methodCalls:
+                - - Calendar/changes
+                  - accountId: account1
+                    sinceState: calendar-state-1
+                  - c1
+            expect:
+              - statusCode: 200
+              - methodResponse:
+                  name: Calendar/changes
+                  callId: c1
+              - jsonPathArrayCount:
+                  path: $.methodResponses[0][1].created
+                  count: 0
+              - jsonPathArrayCount:
+                  path: $.methodResponses[0][1].updated
+                  count: 0
+              - jsonPathArrayCount:
+                  path: $.methodResponses[0][1].destroyed
+                  count: 0
+
+  - id: calendar-event-get
+    name: CalendarEvent/get
+    spec:
+      document: draft-ietf-jmap-calendars-26
+      section: "CalendarEvent/get"
+      requirement: "CalendarEvent/get follows the generic /get contract and returns event objects."
+    scenarios:
+      - id: get-event-contract
+        name: CalendarEvent/get returns event object shape
+        steps:
+          - id: event-get
+            type: jmap
+            request:
+              methodCalls:
+                - - CalendarEvent/get
+                  - accountId: account1
+                    ids:
+                      - event-standup
+                  - c1
+            expect:
+              - statusCode: 200
+              - methodResponse:
+                  name: CalendarEvent/get
+                  callId: c1
+              - jsonPathExists: $.methodResponses[0][1].state
+              - jsonPathExists: $.methodResponses[0][1].list[0].id
+              - jsonPathExists: $.methodResponses[0][1].list[0].calendarIds
+              - jsonPathExists: $.methodResponses[0][1].list[0].title
+
+      - id: get-missing-event-contract
+        name: CalendarEvent/get reports missing ids in notFound
+        spec:
+          document: RFC8620
+          section: "5.1"
+          requirement: "The notFound array contains ids for requested records that do not exist."
+        steps:
+          - id: event-get-missing
+            type: jmap
+            request:
+              methodCalls:
+                - - CalendarEvent/get
+                  - accountId: account1
+                    ids:
+                      - event-missing
+                  - c1
+            expect:
+              - statusCode: 200
+              - jsonPathArrayCount:
+                  path: $.methodResponses[0][1].list
+                  count: 0
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].notFound[0]
+                  value: event-missing
+
+      - id: get-empty-event-ids-contract
+        name: CalendarEvent/get with empty ids returns empty list and notFound
+        spec:
+          document: RFC8620
+          section: "5.1"
+          requirement: "If ids is an empty list, the response list and notFound arrays are empty."
+        steps:
+          - id: event-get-empty-ids
+            type: jmap
+            request:
+              methodCalls:
+                - - CalendarEvent/get
+                  - accountId: account1
+                    ids: []
+                  - c1
+            expect:
+              - statusCode: 200
+              - jsonPathArrayCount:
+                  path: $.methodResponses[0][1].list
+                  count: 0
+              - jsonPathArrayCount:
+                  path: $.methodResponses[0][1].notFound
+                  count: 0
+
+      - id: get-mixed-event-ids-contract
+        name: CalendarEvent/get with mixed known and unknown ids separates list and notFound
+        spec:
+          document: RFC8620
+          section: "5.1"
+          requirement: "The list contains found records and notFound contains ids for records that do not exist."
+        steps:
+          - id: event-get-mixed-ids
+            type: jmap
+            request:
+              methodCalls:
+                - - CalendarEvent/get
+                  - accountId: account1
+                    ids:
+                      - event-standup
+                      - event-missing
+                  - c1
+            expect:
+              - statusCode: 200
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].list[0].id
+                  value: event-standup
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].notFound[0]
+                  value: event-missing
+
+      - id: get-event-properties-contract
+        name: CalendarEvent/get properties filters returned object fields
+        spec:
+          document: RFC8620
+          section: "5.1"
+          requirement: "The properties argument limits the returned object properties to the requested names plus required server-set properties where applicable."
+        steps:
+          - id: event-get-properties
+            type: jmap
+            request:
+              methodCalls:
+                - - CalendarEvent/get
+                  - accountId: account1
+                    ids:
+                      - event-standup
+                    properties:
+                      - id
+                      - title
+                  - c1
+            expect:
+              - statusCode: 200
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].list[0].id
+                  value: event-standup
+              - jsonPathExists: $.methodResponses[0][1].list[0].title
+              - jsonPathNotExists: $.methodResponses[0][1].list[0].description
+              - jsonPathNotExists: $.methodResponses[0][1].list[0].calendarIds
+
+  - id: calendar-event-changes
+    name: CalendarEvent/changes
+    spec:
+      document: RFC8620
+      section: "5.2"
+      requirement: "Changes responses include oldState, newState, hasMoreChanges, created, updated and destroyed."
+    scenarios:
+      - id: event-changes-from-old-state
+        name: CalendarEvent/changes from old state returns created ids
+        spec:
+          document: RFC8620
+          section: "5.2"
+          requirement: "The created array contains ids for records created since the old state."
+        steps:
+          - id: event-changes-created
+            type: jmap
+            request:
+              methodCalls:
+                - - CalendarEvent/changes
+                  - accountId: account1
+                    sinceState: calendar-event-state-0
+                  - c1
+            expect:
+              - statusCode: 200
+              - methodResponse:
+                  name: CalendarEvent/changes
+                  callId: c1
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].oldState
+                  value: calendar-event-state-0
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].newState
+                  value: calendar-event-state-1
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].hasMoreChanges
+                  value: false
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].created[0]
+                  value: event-standup
+              - jsonPathArrayCount:
+                  path: $.methodResponses[0][1].updated
+                  count: 0
+              - jsonPathArrayCount:
+                  path: $.methodResponses[0][1].destroyed
+                  count: 0
+
+      - id: event-changes-from-current-state
+        name: CalendarEvent/changes from current state returns no changes
+        spec:
+          document: RFC8620
+          section: "5.2"
+          requirement: "If there are no changes since the supplied state, created, updated and destroyed are empty."
+        steps:
+          - id: event-changes-empty
+            type: jmap
+            request:
+              methodCalls:
+                - - CalendarEvent/changes
+                  - accountId: account1
+                    sinceState: calendar-event-state-1
+                  - c1
+            expect:
+              - statusCode: 200
+              - methodResponse:
+                  name: CalendarEvent/changes
+                  callId: c1
+              - jsonPathArrayCount:
+                  path: $.methodResponses[0][1].created
+                  count: 0
+              - jsonPathArrayCount:
+                  path: $.methodResponses[0][1].updated
+                  count: 0
+              - jsonPathArrayCount:
+                  path: $.methodResponses[0][1].destroyed
+                  count: 0

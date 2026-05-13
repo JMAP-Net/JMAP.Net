@@ -1,0 +1,285 @@
+id: core-rfc8620
+name: RFC8620 Core compliance tests
+description: Core protocol checks derived from RFC8620 requirements.
+category: compliance
+spec:
+  document: RFC8620
+
+defaults:
+  using:
+    - urn:ietf:params:jmap:core
+
+groups:
+  - id: session
+    name: Session resource
+    spec:
+      document: RFC8620
+      section: "2"
+      requirement: "The Session object advertises server capabilities, accounts, primary accounts and API URLs."
+    scenarios:
+      - id: session-required-properties
+        name: Session object contains required top-level properties
+        spec:
+          document: RFC8620
+          section: "2"
+          requirement: "A Session object contains capabilities, accounts, primaryAccounts, username, apiUrl, downloadUrl, uploadUrl, eventSourceUrl and state."
+        steps:
+          - id: session
+            type: session
+            expect:
+              - statusCode: 200
+              - jsonPathExists: $.capabilities
+              - jsonPathExists: $.accounts
+              - jsonPathExists: $.primaryAccounts
+              - jsonPathExists: $.username
+              - jsonPathExists: $.apiUrl
+              - jsonPathExists: $.downloadUrl
+              - jsonPathExists: $.uploadUrl
+              - jsonPathExists: $.eventSourceUrl
+              - jsonPathExists: $.state
+
+      - id: session-core-capability
+        name: Session advertises JMAP Core capability
+        spec:
+          document: RFC8620
+          section: "2"
+          requirement: "The capabilities object keys are capability URIs supported by the server."
+        steps:
+          - id: session-core-capability
+            type: session
+            expect:
+              - statusCode: 200
+              - jsonPathExists: $.capabilities.urn:ietf:params:jmap:core
+
+  - id: request-object
+    name: Request object
+    spec:
+      document: RFC8620
+      section: "3.3"
+      requirement: "The Request object has using, methodCalls and optional createdIds properties."
+    scenarios:
+      - id: valid-empty-method-calls
+        name: Request object with no method calls is valid
+        spec:
+          document: RFC8620
+          section: "3.3"
+          requirement: "methodCalls is an array of calls to process; an empty array is a valid array."
+        steps:
+          - id: empty-method-calls
+            type: raw
+            body: '{"using":["urn:ietf:params:jmap:core"],"methodCalls":[]}'
+            expect:
+              - statusCode: 200
+              - jsonPathArrayCount:
+                  path: $.methodResponses
+                  count: 0
+              - jsonPathExists: $.sessionState
+
+      - id: invalid-request-object
+        name: Missing methodCalls is rejected as notRequest
+        spec:
+          document: RFC8620
+          section: "3.3"
+          requirement: "A valid Request object requires a methodCalls property."
+        steps:
+          - id: missing-method-calls
+            type: raw
+            body: '{"using":["urn:ietf:params:jmap:core"]}'
+            expect:
+              - statusCode: 400
+              - jsonPathEquals:
+                  path: $.type
+                  value: urn:ietf:params:jmap:error:notRequest
+
+      - id: invalid-json-body
+        name: Invalid JSON body is rejected as notJson
+        spec:
+          document: RFC8620
+          section: "3.3"
+          requirement: "If the request body is not valid JSON, the server returns a notJson problem response."
+        steps:
+          - id: invalid-json
+            type: raw
+            body: '{ invalid'
+            expect:
+              - statusCode: 400
+              - jsonPathEquals:
+                  path: $.type
+                  value: urn:ietf:params:jmap:error:notJSON
+
+  - id: method-calls
+    name: Method calls
+    spec:
+      document: RFC8620
+      section: "3.2"
+      requirement: "A method call is a tuple of method name, arguments object and client id."
+    scenarios:
+      - id: unknown-method
+        name: Unknown method returns method-level unknownMethod error
+        spec:
+          document: RFC8620
+          section: "3.2"
+          requirement: "If a method is unknown, the response is an error response for that method call."
+        steps:
+          - id: unknown-method
+            type: jmap
+            request:
+              methodCalls:
+                - - Test/doesNotExist
+                  - {}
+                  - c1
+            expect:
+              - statusCode: 200
+              - methodResponse:
+                  name: error
+                  callId: c1
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].type
+                  value: unknownMethod
+
+      - id: core-echo-roundtrip
+        name: Core/echo echoes its arguments
+        spec:
+          document: RFC8620
+          section: "4.1"
+          requirement: "Core/echo takes an object and returns the same object."
+        steps:
+          - id: core-echo
+            type: jmap
+            request:
+              methodCalls:
+                - - Core/echo
+                  - string: value
+                    number: 7
+                    bool: true
+                  - c1
+            expect:
+              - statusCode: 200
+              - methodResponse:
+                  name: Core/echo
+                  callId: c1
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].string
+                  value: value
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].number
+                  value: 7
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].bool
+                  value: true
+
+      - id: multiple-method-calls-response-order
+        name: Multiple method responses preserve request order
+        spec:
+          document: RFC8620
+          section: "3.4"
+          requirement: "The methodResponses array contains responses in the same order the methods were processed."
+        steps:
+          - id: multiple-method-calls
+            type: jmap
+            request:
+              methodCalls:
+                - - Core/echo
+                  - index: 1
+                  - c1
+                - - Core/echo
+                  - index: 2
+                  - c2
+                - - Core/echo
+                  - index: 3
+                  - c3
+            expect:
+              - statusCode: 200
+              - jsonPathEquals:
+                  path: $.methodResponses[0][2]
+                  value: c1
+              - jsonPathEquals:
+                  path: $.methodResponses[1][2]
+                  value: c2
+              - jsonPathEquals:
+                  path: $.methodResponses[2][2]
+                  value: c3
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].index
+                  value: 1
+              - jsonPathEquals:
+                  path: $.methodResponses[1][1].index
+                  value: 2
+              - jsonPathEquals:
+                  path: $.methodResponses[2][1].index
+                  value: 3
+
+      - id: method-error-preserves-call-id
+        name: Method error preserves original call id
+        spec:
+          document: RFC8620
+          section: "3.2"
+          requirement: "The third item in a response invocation is the same method call id from the request invocation."
+        steps:
+          - id: method-error-call-id
+            type: jmap
+            request:
+              methodCalls:
+                - - Test/doesNotExist
+                  - {}
+                  - client-call-id
+            expect:
+              - statusCode: 200
+              - jsonPathEquals:
+                  path: $.methodResponses[0][0]
+                  value: error
+              - jsonPathEquals:
+                  path: $.methodResponses[0][2]
+                  value: client-call-id
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].type
+                  value: unknownMethod
+
+      - id: invalid-result-reference
+        name: Invalid result reference returns invalidResultReference method error
+        spec:
+          document: RFC8620
+          section: "3.7"
+          requirement: "If a result reference cannot be resolved, the method returns an invalidResultReference error."
+        steps:
+          - id: invalid-result-reference
+            type: jmap
+            request:
+              methodCalls:
+                - - Core/echo
+                  - "#missing": "#c1/missing"
+                  - c2
+            expect:
+              - statusCode: 200
+              - jsonPathEquals:
+                  path: $.methodResponses[0][0]
+                  value: error
+              - jsonPathEquals:
+                  path: $.methodResponses[0][2]
+                  value: c2
+              - jsonPathEquals:
+                  path: $.methodResponses[0][1].type
+                  value: invalidResultReference
+
+  - id: capabilities
+    name: Capability negotiation
+    spec:
+      document: RFC8620
+      section: "3.3"
+      requirement: "The using property declares capabilities the client wishes to use; unsupported capabilities are rejected."
+    scenarios:
+      - id: unsupported-capability
+        name: Unsupported capability is rejected
+        spec:
+          document: RFC8620
+          section: "3.3"
+          requirement: "If the request uses a capability not supported by the server, the server rejects the request."
+        steps:
+          - id: unsupported-capability
+            type: raw
+            body: '{"using":["urn:example:missing"],"methodCalls":[["Core/echo",{},"c1"]]}'
+            expect:
+              - statusCode: 400
+              - jsonPathEquals:
+                  path: $.type
+                  value: urn:ietf:params:jmap:error:unknownCapability

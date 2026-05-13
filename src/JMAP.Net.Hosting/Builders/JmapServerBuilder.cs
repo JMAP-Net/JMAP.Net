@@ -1,5 +1,8 @@
 using System.ComponentModel;
 using JMAP.Net.Hosting.Configuration;
+using JMAP.Net.Hosting.Engine;
+using JMAP.Net.Hosting.Engine.Principal;
+using JMAP.Net.Hosting.Internal.Handlers;
 using JMAP.Net.Hosting.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -60,6 +63,24 @@ public sealed class JmapServerBuilder
         where THandler : class, IJmapMethodHandler
     {
         Services.TryAddEnumerable(ServiceDescriptor.Scoped<IJmapMethodHandler, THandler>());
+
+        return this;
+    }
+
+    /// <summary>
+    /// Registers the Principal engine slice and the Principal/get method handler.
+    /// </summary>
+    /// <typeparam name="TPrincipalStore">The Principal store implementation type.</typeparam>
+    /// <typeparam name="TUserContextProvider">The user context provider implementation type.</typeparam>
+    /// <returns>The current builder instance.</returns>
+    public JmapServerBuilder AddPrincipalEngine<TPrincipalStore, TUserContextProvider>()
+        where TPrincipalStore : class, IPrincipalStore
+        where TUserContextProvider : class, IJmapUserContextProvider
+    {
+        Services.TryAddScoped<IPrincipalStore, TPrincipalStore>();
+        Services.TryAddScoped<IJmapUserContextProvider, TUserContextProvider>();
+        Services.TryAddScoped<IPrincipalEngine, PrincipalEngine>();
+        Services.TryAddEnumerable(ServiceDescriptor.Scoped<IJmapMethodHandler, PrincipalGetHandler>());
 
         return this;
     }
